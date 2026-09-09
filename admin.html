@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLARIFAI Admin — Control Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --maroon-900:#2B1710;
+    --sand-50:#FDF7F0;
+    --sand-100:#FBEEE3;
+    --paper:#FFFFFF;
+    --gold-400:#F0A052;
+    --ember-500:#E8703A;
+    --ember-600:#D9601F;
+    --ink-900:#2B1710;
+    --ink-500:#7A6A60;
+    --ink-300:#C9B9AE;
+    --line:#F0E2D5;
+    --green:#3FAE5C;
+    --red:#E05A4E;
+    --shadow: 0 20px 45px -20px rgba(43,23,16,0.35);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Inter',sans-serif;
+    color:var(--ink-900);
+    background:var(--sand-50);
+    display:flex;
+    min-height:100vh;
+  }
+  h1,h2,h3,h4{margin:0; font-family:'Poppins',sans-serif; font-weight:600; color:var(--ink-900);}
+  p{margin:0;}
+  button{ font-family:'Inter',sans-serif; }
+  ::-webkit-scrollbar{width:8px; height:8px;}
+  ::-webkit-scrollbar-thumb{background:var(--ink-300); border-radius:8px;}
+
+
+  /* ================= SIDEBAR ================= */
+  .sidebar{
+    width:236px; flex:0 0 auto;
+    background:var(--maroon-900);
+    display:flex; flex-direction:column;
+    padding:22px 16px;
+    position:sticky; top:0; height:100vh;
+  }
+  .brand{ padding:6px 10px 28px; cursor:pointer; }
+  .brand .word-logo{
+    font-family:'Poppins',sans-serif; font-weight:700; font-size:21px; letter-spacing:0.01em;
+    background:linear-gradient(180deg, var(--gold-400), var(--ember-500));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    display:inline-block;
+  }
+  .brand .word-logo + span{ display:block; font-family:'Inter',sans-serif; font-weight:500; font-size:10px; color:rgba(251,238,227,0.5); margin-top:3px;}
+
+
+  .nav-group{ margin-bottom:6px; }
+  .nav-label{ font-size:10.5px; font-weight:600; color:rgba(251,238,227,0.35); padding:14px 12px 8px; letter-spacing:0.02em; }
+  .nav-item{
+    display:flex; align-items:center; gap:11px;
+    padding:10px 12px; border-radius:11px;
+    color:rgba(251,238,227,0.72);
+    font-size:13px; font-weight:500;
+    cursor:pointer; margin-bottom:2px;
+    border:none; background:none; width:100%; text-align:left;
+    font-family:'Inter',sans-serif;
+  }
+  .nav-item svg{ width:17px; height:17px; flex:0 0 auto; }
+  .nav-item:hover{ background:rgba(251,238,227,0.06); color:#FBEEE3; }
+  .nav-item.active{
+    background:linear-gradient(90deg, rgba(232,112,58,0.28), rgba(232,112,58,0.08));
+    color:#fff;
+    box-shadow:inset 2.5px 0 0 var(--ember-500);
+  }
+  .nav-badge{
+    margin-left:auto; background:var(--ember-500); color:#fff;
+    font-size:10px; font-weight:700; padding:2px 7px; border-radius:20px;
+  }
+
+
+  .side-foot{
+    margin-top:auto; padding-top:16px; border-top:1px solid rgba(251,238,227,0.1);
+    display:flex; align-items:center; gap:10px; padding:14px 10px 4px;
+  }
+  .side-foot .av{
+    width:32px; height:32px; border-radius:50%;
+    background:linear-gradient(180deg, var(--ember-500), var(--ember-600));
+    display:flex; align-items:center; justify-content:center; color:#fff; font-weight:600; font-size:12px; font-family:'Poppins',sans-serif;
+  }
+  .side-foot h5{ color:#FBEEE3; font-size:12.5px; margin-bottom:1px; font-family:'Inter',sans-serif; font-weight:600;}
+  .side-foot span{ color:rgba(251,238,227,0.45); font-size:10.5px; }
+  .side-note{ font-size:10.5px; color:rgba(251,238,227,0.38); line-height:1.5; padding:12px 10px 0; }
+
+
+  /* ================= MAIN ================= */
+  .main{ flex:1 1 auto; min-width:0; display:flex; flex-direction:column; }
+  .topbar{
+    height:66px; flex:0 0 auto;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 28px; background:var(--paper); border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:5;
+  }
+  .topbar h2{ font-size:17px; }
+  .topbar .sub{ font-size:11.5px; color:var(--ink-500); font-weight:400; margin-top:2px; }
+  .search-box{
+    display:flex; align-items:center; gap:8px;
+    background:var(--sand-100); border-radius:12px; padding:9px 14px;
+    width:280px; color:var(--ink-500); font-size:12.5px;
+  }
+  .search-box svg{ width:15px; height:15px; flex:0 0 auto; }
+  .topbar-right{ display:flex; align-items:center; gap:16px; }
+  .icon-pill{
+    width:36px; height:36px; border-radius:50%; background:var(--sand-100);
+    display:flex; align-items:center; justify-content:center; color:var(--ember-500); position:relative; cursor:pointer;
+  }
+  .icon-pill svg{ width:16px; height:16px; }
+  .icon-pill .dot{ position:absolute; top:7px; right:8px; width:7px; height:7px; border-radius:50%; background:var(--red); border:1.5px solid #fff; }
+
+
+  .content{ flex:1 1 auto; overflow-y:auto; padding:26px 28px 40px; }
+  .view{ display:none; }
+  .view.active{ display:block; }
+
+
+  /* ---- shared card / grid ---- */
+  .card{ background:var(--paper); border:1px solid var(--line); border-radius:18px; }
+  .grid-4{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:20px; }
+  .grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:20px; }
+  .grid-2{ display:grid; grid-template-columns:1.4fr 1fr; gap:16px; margin-bottom:20px; }
+  .grid-2.even{ grid-template-columns:1fr 1fr; }
+
+
+  /* KPI cards */
+  .kpi{ padding:18px 19px; display:flex; flex-direction:column; gap:9px; }
+  .kpi .top{ display:flex; align-items:center; justify-content:space-between; }
+  .kpi .ic{ width:34px; height:34px; border-radius:10px; background:var(--sand-100); display:flex; align-items:center; justify-content:center; color:var(--ember-500); }
+  .kpi .ic svg{ width:16px; height:16px; }
+  .kpi .trend{ font-size:11px; font-weight:600; display:flex; align-items:center; gap:3px; }
+  .kpi .trend.up{ color:var(--green); }
+  .kpi .trend.down{ color:var(--red); }
+  .kpi .num{ font-size:26px; font-weight:700; font-family:'Poppins',sans-serif; }
+  .kpi .lbl{ font-size:12px; color:var(--ink-500); }
+
+
+  .panel-head{ display:flex; align-items:center; justify-content:space-between; padding:18px 20px 4px; }
+  .panel-head h3{ font-size:14.5px; }
+  .panel-head .note{ font-size:11px; color:var(--ink-500); }
+  .panel-body{ padding:14px 20px 20px; }
+
+
+  /* trend bar chart */
+  .bar-chart{ display:flex; align-items:flex-end; gap:10px; height:140px; padding-top:8px; }
+  .bar-chart .col{ flex:1 1 auto; display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .bar-chart .stack{ width:100%; max-width:34px; border-radius:8px 8px 4px 4px; background:var(--sand-100); position:relative; display:flex; align-items:flex-end; overflow:hidden; }
+  .bar-chart .fill{ width:100%; background:linear-gradient(180deg, var(--gold-400), var(--ember-600)); border-radius:8px 8px 0 0; }
+  .bar-chart .day{ font-size:10.5px; color:var(--ink-500); }
+
+
+  /* generic breakdown bar row */
+  .breakdown-row{ display:flex; align-items:center; gap:12px; padding:9px 0; }
+  .breakdown-row .name{ width:120px; flex:0 0 auto; font-size:12.5px; font-weight:500; }
+  .breakdown-row .track{ flex:1 1 auto; height:8px; border-radius:6px; background:var(--sand-100); overflow:hidden; }
+  .breakdown-row .fill{ height:100%; border-radius:6px; background:linear-gradient(90deg, var(--gold-400), var(--ember-600)); }
+  .breakdown-row .pct{ width:36px; text-align:right; font-size:11.5px; color:var(--ink-500); flex:0 0 auto; }
+
+
+  /* language usage list */
+  .lang-usage-row{ display:flex; align-items:center; gap:11px; padding:8px 0; }
+  .lang-usage-row .chip{ width:8px; height:8px; border-radius:50%; flex:0 0 auto; }
+  .lang-usage-row .name{ flex:1 1 auto; font-size:12.5px; font-weight:500; }
+  .lang-usage-row .pct{ font-size:12px; color:var(--ink-500); font-weight:600; }
+
+
+  /* activity feed */
+  .feed-row{ display:flex; gap:12px; padding:11px 0; border-bottom:1px solid var(--line); cursor:pointer; }
+  .feed-row:last-child{ border-bottom:none; }
+  .feed-row:hover{ background:var(--sand-50); margin:0 -8px; padding-left:8px; padding-right:8px; border-radius:10px; }
+  .feed-row .dot{ width:8px; height:8px; border-radius:50%; margin-top:5px; flex:0 0 auto; }
+  .feed-row .dot.ok{ background:var(--green); }
+  .feed-row .dot.warn{ background:var(--ember-500); }
+  .feed-row .dot.err{ background:var(--red); }
+  .feed-row .tx p{ font-size:12.5px; line-height:1.5; }
+  .feed-row .tx span{ font-size:11px; color:var(--ink-500); }
+  .feed-row b{ font-weight:600; }
+
+
+  /* status pill */
+  .pill{ font-size:10.5px; font-weight:700; padding:4px 10px; border-radius:20px; display:inline-flex; align-items:center; gap:5px; }
+  .pill.ok{ background:#E9F7ED; color:var(--green); }
+  .pill.warn{ background:#FDECE0; color:var(--ember-600); }
+  .pill.err{ background:#FDECEB; color:var(--red); }
+  .pill.info{ background:var(--sand-100); color:var(--ink-500); }
+
+
+  /* toolbar (search + filter chips) */
+  .toolbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; gap:14px; flex-wrap:wrap; }
+  .chips{ display:flex; gap:8px; }
+  .chip{ padding:8px 14px; border-radius:20px; font-size:12px; font-weight:600; color:var(--ink-500); background:var(--paper); border:1px solid var(--line); cursor:pointer; }
+  .chip.active{ background:linear-gradient(180deg, var(--ember-500), var(--ember-600)); color:#fff; border-color:transparent; }
+  .toolbar .search-box{ width:240px; }
+
+
+  /* table */
+  table{ width:100%; border-collapse:collapse; }
+  thead th{ text-align:left; font-size:11px; color:var(--ink-500); font-weight:600; padding:0 14px 10px; border-bottom:1px solid var(--line); }
+  tbody td{ padding:13px 14px; font-size:12.5px; border-bottom:1px solid var(--line); vertical-align:middle; }
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody tr.clickable{ cursor:pointer; }
+  tbody tr.clickable:hover{ background:var(--sand-50); }
+  .cell-user{ display:flex; align-items:center; gap:10px; }
+  .cell-user .av{ width:30px; height:30px; border-radius:50%; background:var(--sand-100); color:var(--ember-500); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:11.5px; font-family:'Poppins',sans-serif; flex:0 0 auto; }
+  .cell-user h5{ font-size:12.5px; font-weight:600; margin-bottom:1px; }
+  .cell-user span{ font-size:11px; color:var(--ink-500); }
+  .link-btn{ background:none; border:none; color:var(--ember-500); font-size:12px; font-weight:600; cursor:pointer; padding:0; font-family:'Inter',sans-serif; }
+
+
+  /* back row for drill-down views */
+  .backrow{ display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+  .backrow .iconbtn{
+    width:34px; height:34px; border-radius:50%; border:1px solid var(--line); background:var(--paper);
+    display:flex; align-items:center; justify-content:center; color:var(--ember-500); cursor:pointer; flex:0 0 auto;
+  }
+  .backrow .iconbtn svg{ width:16px; height:16px; }
+
+
+  /* pipeline */
+  .step-card{ display:flex; align-items:center; gap:14px; padding:16px 18px; }
+  .step-card .snum{ width:36px; height:36px; border-radius:50%; background:var(--sand-100); color:var(--ember-500); display:flex; align-items:center; justify-content:center; font-family:'Poppins',sans-serif; font-weight:700; font-size:13px; flex:0 0 auto; }
+  .step-card .mid{ flex:1 1 auto; }
+  .step-card h4{ font-size:13px; margin-bottom:2px; }
+  .step-card span{ font-size:11.5px; color:var(--ink-500); }
+  .step-card .stat{ text-align:right; }
+  .step-card .stat b{ display:block; font-size:15px; font-family:'Poppins',sans-serif; }
+  .step-card .stat small{ font-size:10.5px; color:var(--ink-500); }
+
+
+  /* settings */
+  .settings-row{ display:flex; align-items:center; justify-content:space-between; padding:15px 20px; border-bottom:1px solid var(--line); }
+  .settings-row:last-child{ border-bottom:none; }
+  .settings-row .lbl{ font-size:13px; font-weight:500; }
+  .settings-row .desc{ font-size:11.5px; color:var(--ink-500); margin-top:2px; }
+  .switch{ width:38px; height:22px; border-radius:20px; background:var(--sand-100); position:relative; cursor:pointer; border:none; flex:0 0 auto; }
+  .switch.on{ background:linear-gradient(90deg, var(--ember-500), var(--ember-600)); }
+  .switch i{ position:absolute; top:2px; left:2px; width:16px; height:16px; border-radius:50%; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.2); transition:transform .2s ease; }
+  .switch.on i{ transform:translateX(16px); }
+
+
+  /* ---- user detail ---- */
+  .profile-card{ display:flex; align-items:center; gap:16px; padding:20px; margin-bottom:18px; }
+  .profile-card .av{
+    width:56px; height:56px; border-radius:50%; background:linear-gradient(180deg, var(--ember-500), var(--ember-600));
+    color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Poppins',sans-serif; font-weight:700; font-size:19px; flex:0 0 auto;
+  }
+  .profile-card .info h3{ font-size:16px; margin-bottom:3px; }
+  .profile-card .info span{ font-size:12px; color:var(--ink-500); }
+  .profile-card .tags{ margin-left:auto; display:flex; gap:8px; }
+
+
+  /* ---- report detail ---- */
+  .test-detail-row{ display:flex; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--line); }
+  .test-detail-row:last-child{ border-bottom:none; }
+  .test-detail-row .mid{ flex:1 1 auto; }
+  .test-detail-row h4{ font-size:13.5px; margin-bottom:2px; }
+  .test-detail-row .range{ font-size:11.5px; color:var(--ink-500); }
+  .test-detail-row .val{ font-size:14px; font-weight:600; font-family:'Poppins',sans-serif; width:110px; text-align:right; }
+
+
+  .meta-strip{ display:flex; gap:22px; padding:16px 20px; flex-wrap:wrap; }
+  .meta-strip .m h5{ font-size:11px; color:var(--ink-500); font-weight:500; margin-bottom:4px; }
+  .meta-strip .m div{ font-size:13.5px; font-weight:600; font-family:'Poppins',sans-serif; }
+</style>
+</head>
+<body>
+
+
+<!-- ================= SIDEBAR ================= -->
+<div class="sidebar">
+  <div class="brand" onclick="showView('dashboard')">
+    <span class="word-logo">CLARIFAI</span>
+    <span>Admin Control Center</span>
+  </div>
+
+
+  <div class="nav-group">
+    <button class="nav-item active" data-view="dashboard" onclick="showView('dashboard')">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="3.5" width="8" height="8" rx="2" stroke="currentColor" stroke-width="1.8"/><rect x="12.5" y="3.5" width="8" height="5" rx="2" stroke="currentColor" stroke-width="1.8"/><rect x="12.5" y="10.5" width="8" height="10" rx="2" stroke="currentColor" stroke-width="1.8"/><rect x="3.5" y="13.5" width="8" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/></svg>
+      Dashboard
+    </button>
+    <button class="nav-item" data-view="users" onclick="showView('users')">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.2" stroke="currentColor" stroke-width="1.8"/><path d="M3 19c1.3-3.2 3.6-4.7 6-4.7s4.7 1.5 6 4.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M15.5 5.3a3.2 3.2 0 0 1 0 6M18 19c-.6-1.6-1.5-2.8-2.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      Users
+    </button>
+    <button class="nav-item" data-view="reports" onclick="showView('reports')">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="3.5" width="14" height="17" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      Reports
+      <span class="nav-badge">1.2k</span>
+    </button>
+  </div>
+
+
+  <div class="nav-group">
+    <div class="nav-label">INSIGHTS</div>
+    <button class="nav-item" data-view="languages" onclick="showView('languages')">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h9M8 4v2c0 4.5-2 8-5 10M6 12c1.8 2 4.6 3.2 7 3.4M13 21l4-9 4 9M14.5 18h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Language usage
+    </button>
+    <button class="nav-item" data-view="pipeline" onclick="showView('pipeline')">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 1 1 16 0 8 8 0 0 1-16 0Z" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v4l2.5 2.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Pipeline health
+    </button>
+  </div>
+
+
+  <div class="nav-group">
+    <div class="nav-label">ADMIN</div>
+    <button class="nav-item" data-view="settings" onclick="showView('settings')">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M12 3v2.2M12 18.8V21M4.2 12H2M22 12h-2.2M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M5.6 18.4l1.6-1.6M16.8 7.2l1.6-1.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      Settings
+    </button>
+  </div>
+
+
+  <div class="side-foot">
+    <div class="av">JD</div>
+    <div><h5>Jun Dela Cruz</h5><span>Admin (view-only)</span></div>
+  </div>
+  <div class="side-note">Medical explanations are generated and curated by CLARIFAI's AI — this console is for monitoring usage, not editing translations.</div>
+</div>
+
+
+<!-- ================= MAIN ================= -->
+<div class="main">
+  <div class="topbar">
+    <div>
+      <h2 id="view-title">Dashboard</h2>
+      <div class="sub" id="view-sub">Everything happening across the CLARIFAI app, right now</div>
+    </div>
+    <div class="topbar-right">
+      <div class="search-box"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Search reports, users…</div>
+      <div class="icon-pill"><div class="dot"></div><svg viewBox="0 0 24 24" fill="none"><path d="M6 9a6 6 0 0 1 12 0c0 4 1.5 5.5 2 6H4c.5-.5 2-2 2-6Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 19a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(180deg,var(--ember-500),var(--ember-600));color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:600;font-size:12px;">JD</div>
+    </div>
+  </div>
+
+
+  <div class="content">
+
+
+    <!-- ============ DASHBOARD ============ -->
+    <div class="view active" id="view-dashboard">
+      <div class="grid-4">
+        <div class="card kpi">
+          <div class="top"><div class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4v11M7 9l5-5 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="trend up">▲ 12%</div></div>
+          <div class="num">348</div>
+          <div class="lbl">Reports processed today</div>
+        </div>
+        <div class="card kpi">
+          <div class="top"><div class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.2" stroke="currentColor" stroke-width="1.8"/><path d="M3 19c1.3-3.2 3.6-4.7 6-4.7s4.7 1.5 6 4.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div><div class="trend up">▲ 4%</div></div>
+          <div class="num">5,204</div>
+          <div class="lbl">Active users this week</div>
+        </div>
+        <div class="card kpi">
+          <div class="top"><div class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 15V9m0 0l-3 3m3-3l3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="trend down">▼ 2%</div></div>
+          <div class="num">31%</div>
+          <div class="lbl">Results flagged this week</div>
+        </div>
+        <div class="card kpi">
+          <div class="top"><div class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v4l2.5 2.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="trend up">▲ 0.3s</div></div>
+          <div class="num">4.8s</div>
+          <div class="lbl">Avg. processing time</div>
+        </div>
+      </div>
+
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="panel-head"><h3>Reports processed — last 7 days</h3><span class="note">348 today</span></div>
+          <div class="panel-body">
+            <div class="bar-chart" id="trend-chart"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="panel-head"><h3>Most flagged tests</h3><span class="note">this week</span></div>
+          <div class="panel-body" id="flagged-breakdown"></div>
+        </div>
+      </div>
+
+
+      <div class="grid-2 even">
+        <div class="card">
+          <div class="panel-head"><h3>Report language usage</h3></div>
+          <div class="panel-body" id="lang-usage"></div>
+        </div>
+        <div class="card">
+          <div class="panel-head"><h3>Recent activity</h3><span class="note">live</span></div>
+          <div class="panel-body" id="activity-feed"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============ USERS (list) ============ -->
+    <div class="view" id="view-users">
+      <div class="grid-3">
+        <div class="card kpi"><div class="num">5,204</div><div class="lbl">Total users</div></div>
+        <div class="card kpi"><div class="num">312</div><div class="lbl">New this week</div></div>
+        <div class="card kpi"><div class="num">78%</div><div class="lbl">Prefer a local language over English</div></div>
+      </div>
+      <div class="toolbar">
+        <div class="chips">
+          <div class="chip active">All users</div>
+          <div class="chip">Most active</div>
+          <div class="chip">New</div>
+        </div>
+        <div class="search-box"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Search users…</div>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>User</th><th>Reports</th><th>Preferred language</th><th>Last active</th><th>Status</th><th></th></tr></thead>
+          <tbody id="users-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <!-- ============ USER DETAIL ============ -->
+    <div class="view" id="view-user-detail">
+      <div class="backrow">
+        <div class="iconbtn" onclick="showView('users')"><svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3 style="font-size:15px;">Back to users</h3>
+      </div>
+      <div class="card profile-card">
+        <div class="av" id="ud-init">MR</div>
+        <div class="info">
+          <h3 id="ud-name">Marisol Reyes</h3>
+          <span id="ud-email">marisol.reyes@email.com</span>
+        </div>
+        <div class="tags" id="ud-tags"></div>
+      </div>
+      <div class="grid-3">
+        <div class="card kpi"><div class="num" id="ud-reports">6</div><div class="lbl">Reports uploaded</div></div>
+        <div class="card kpi"><div class="num" id="ud-flags">3</div><div class="lbl">Flagged results, all time</div></div>
+        <div class="card kpi"><div class="num" id="ud-audio">14</div><div class="lbl">Audio explanations played</div></div>
+      </div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="panel-head"><h3>Report history</h3><span class="note">click a report to see the translated results</span></div>
+        <div class="panel-body" style="padding-top:6px;">
+          <table>
+            <thead><tr><th>Report</th><th>Panel</th><th>Date</th><th>Language</th><th>Flagged</th><th>Status</th></tr></thead>
+            <tbody id="ud-reports-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============ REPORTS (list) ============ -->
+    <div class="view" id="view-reports">
+      <div class="toolbar">
+        <div class="chips">
+          <div class="chip active">All (1,204)</div>
+          <div class="chip">Flagged (372)</div>
+          <div class="chip">Processing (6)</div>
+          <div class="chip">Errors (3)</div>
+        </div>
+        <div class="search-box"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Filter by user or panel…</div>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Report</th><th>User</th><th>Panel</th><th>Uploaded</th><th>Flagged</th><th>Status</th><th></th></tr></thead>
+          <tbody id="reports-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <!-- ============ REPORT DETAIL ============ -->
+    <div class="view" id="view-report-detail">
+      <div class="backrow">
+        <div class="iconbtn" onclick="showView('reports')"><svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3 style="font-size:15px;">Back to reports</h3>
+      </div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="panel-head"><h3 id="rd-title">Complete Blood Count</h3><span class="pill" id="rd-status"></span></div>
+        <div class="meta-strip">
+          <div class="m"><h5>Uploaded by</h5><div id="rd-user">—</div></div>
+          <div class="m"><h5>Date</h5><div id="rd-date">—</div></div>
+          <div class="m"><h5>Report language</h5><div id="rd-lang">—</div></div>
+          <div class="m"><h5>Audio played</h5><div id="rd-audio">—</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="panel-head"><h3>Translated results</h3><span class="note">as shown to the user in the app</span></div>
+        <div class="panel-body" id="rd-tests"></div>
+      </div>
+    </div>
+
+
+    <!-- ============ LANGUAGES ============ -->
+    <div class="view" id="view-languages">
+      <div class="grid-2 even">
+        <div class="card">
+          <div class="panel-head"><h3>Report language usage</h3><span class="note">share of reports generated</span></div>
+          <div class="panel-body" id="lang-coverage"></div>
+        </div>
+        <div class="card">
+          <div class="panel-head"><h3>Users by preferred language</h3></div>
+          <div class="panel-body" id="lang-users"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============ PIPELINE ============ -->
+    <div class="view" id="view-pipeline">
+      <div class="grid-3">
+        <div class="card kpi"><div class="num">99.4%</div><div class="lbl">Pipeline uptime, 30 days</div></div>
+        <div class="card kpi"><div class="num">6</div><div class="lbl">Reports in queue right now</div></div>
+        <div class="card kpi"><div class="num">3</div><div class="lbl">Errors in the last 24 hours</div></div>
+      </div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="panel-head"><h3>Pipeline steps — average latency</h3></div>
+        <div class="panel-body" style="display:flex; flex-direction:column; gap:10px;" id="pipeline-steps"></div>
+      </div>
+      <div class="card">
+        <div class="panel-head"><h3>Recent errors</h3><span class="note">last 24 hours</span></div>
+        <div class="panel-body" style="padding-top:6px;">
+          <table>
+            <thead><tr><th>Time</th><th>Report</th><th>Step</th><th>Message</th></tr></thead>
+            <tbody id="errors-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============ SETTINGS ============ -->
+    <div class="view" id="view-settings">
+      <div class="card" style="margin-bottom:16px;">
+        <div class="panel-head"><h3>Account</h3></div>
+        <div class="settings-row"><div><div class="lbl">Jun Dela Cruz</div><div class="desc">jun.delacruz@clarifai.ph · Admin (view-only access)</div></div><button class="link-btn">Edit</button></div>
+        <div class="settings-row"><div><div class="lbl">Two-factor authentication</div><div class="desc">Require a code at every admin sign-in</div></div><div class="switch on" onclick="this.classList.toggle('on')"><i></i></div></div>
+      </div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="panel-head"><h3>Notifications</h3></div>
+        <div class="settings-row"><div><div class="lbl">Pipeline errors</div><div class="desc">Email the on-call admin when a report fails to process</div></div><div class="switch on" onclick="this.classList.toggle('on')"><i></i></div></div>
+        <div class="settings-row"><div><div class="lbl">Weekly summary</div><div class="desc">Usage and flagged-result digest every Monday</div></div><div class="switch on" onclick="this.classList.toggle('on')"><i></i></div></div>
+      </div>
+      <div class="card">
+        <div class="panel-head"><h3>Data &amp; access</h3></div>
+        <div class="settings-row"><div><div class="lbl">Admin roles</div><div class="desc">Manage who can view usage statistics</div></div><button class="link-btn">Manage</button></div>
+        <div class="settings-row"><div><div class="lbl">Export usage report</div><div class="desc">Download a de-identified CSV of app activity</div></div><button class="link-btn">Export</button></div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+
+<script>
+  const VIEW_META = {
+    dashboard:{ title:'Dashboard', sub:'Everything happening across the CLARIFAI app, right now' },
+    users:{ title:'Users', sub:'Everyone using CLARIFAI, and how they use it' },
+    'user-detail':{ title:'User profile', sub:'Report history and translation activity for this user' },
+    reports:{ title:'Reports', sub:'Every lab report uploaded and processed through the app' },
+    'report-detail':{ title:'Report detail', sub:'The translated result exactly as the user saw it' },
+    languages:{ title:'Language usage', sub:'How Philippine languages are used across the app' },
+    pipeline:{ title:'Pipeline health', sub:'How the capture → explain pipeline is performing' },
+    settings:{ title:'Settings', sub:'Admin account, notifications, and access controls' }
+  };
+
+
+  function showView(name){
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.view===name));
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-'+name).classList.add('active');
+    document.getElementById('view-title').textContent = VIEW_META[name].title;
+    document.getElementById('view-sub').textContent = VIEW_META[name].sub;
+    document.querySelector('.content').scrollTop = 0;
+  }
+
+
+  // ---- Dashboard: trend chart ----
+  (function(){
+    const days = [
+      {d:'Wed', v:0.62},{d:'Thu', v:0.7},{d:'Fri', v:0.55},{d:'Sat', v:0.4},
+      {d:'Sun', v:0.45},{d:'Mon', v:0.82},{d:'Tue', v:1}
+    ];
+    const wrap = document.getElementById('trend-chart');
+    days.forEach(day=>{
+      const col = document.createElement('div'); col.className='col';
+      const stack = document.createElement('div'); stack.className='stack'; stack.style.height='100px';
+      const fill = document.createElement('div'); fill.className='fill'; fill.style.height=(day.v*100)+'%';
+      stack.appendChild(fill);
+      const lbl = document.createElement('div'); lbl.className='day'; lbl.textContent=day.d;
+      col.appendChild(stack); col.appendChild(lbl);
+      wrap.appendChild(col);
+    });
+  })();
+
+
+  // ---- Dashboard: flagged breakdown ----
+  const FLAGGED = [
+    {name:'Fasting glucose', pct:34},
+    {name:'White blood cells', pct:27},
+    {name:'Platelets', pct:19},
+    {name:'LDL cholesterol', pct:12},
+    {name:'Creatinine', pct:8}
+  ];
+  (function(){
+    const wrap = document.getElementById('flagged-breakdown');
+    FLAGGED.forEach(f=>{
+      wrap.innerHTML += `<div class="breakdown-row"><div class="name">${f.name}</div><div class="track"><div class="fill" style="width:${f.pct*2}%;"></div></div><div class="pct">${f.pct}%</div></div>`;
+    });
+  })();
+
+
+  // ---- Dashboard: language usage ----
+  const LANGS = [
+    {name:'Filipino', pct:42, c:'#E8703A'},
+    {name:'Cebuano', pct:18, c:'#F0A052'},
+    {name:'English', pct:15, c:'#7A6A60'},
+    {name:'Ilocano', pct:9, c:'#3FAE5C'},
+    {name:'Hiligaynon', pct:7, c:'#D9601F'},
+    {name:'Others', pct:9, c:'#C9B9AE'}
+  ];
+  (function(){
+    const wrap = document.getElementById('lang-usage');
+    LANGS.forEach(l=>{
+      wrap.innerHTML += `<div class="lang-usage-row"><div class="chip" style="background:${l.c};"></div><div class="name">${l.name}</div><div class="pct">${l.pct}%</div></div>`;
+    });
+    const wrap2 = document.getElementById('lang-coverage');
+    LANGS.forEach(l=>{
+      wrap2.innerHTML += `<div class="breakdown-row"><div class="name">${l.name}</div><div class="track"><div class="fill" style="width:${l.pct*2}%;"></div></div><div class="pct">${l.pct}%</div></div>`;
+    });
+  })();
+
+
+  // ---- Dashboard: activity feed (clickable -> relevant user/report) ----
+  const ACTIVITY = [
+    {dot:'ok', text:'<b>Marisol R.</b> uploaded a Complete Blood Count report', time:'2 min ago', go:()=>openReportDetail('10502')},
+    {dot:'warn', text:'<b>Fasting Glucose</b> flagged above range for <b>Ramon T.</b>', time:'11 min ago', go:()=>openReportDetail('10501')},
+    {dot:'err', text:'Processing failed on report #10482 — capture step timed out', time:'26 min ago', go:()=>openReportDetail('10482')},
+    {dot:'ok', text:'<b>Aling Nena</b> switched her report language to Ilocano', time:'44 min ago', go:()=>openUserDetail('AN')},
+    {dot:'ok', text:'<b>Kevin P.</b> uploaded a Lipid Profile report', time:'1 hr ago', go:()=>openUserDetail('KP')}
+  ];
+  (function(){
+    const wrap = document.getElementById('activity-feed');
+    ACTIVITY.forEach((a,i)=>{
+      wrap.innerHTML += `<div class="feed-row" onclick="ACTIVITY[${i}].go()"><div class="dot ${a.dot}"></div><div class="tx"><p>${a.text}</p><span>${a.time}</span></div></div>`;
+    });
+  })();
+
+
+  // ---- Shared data: reports (with translated test breakdown) ----
+  const REPORTS = {
+    '10502':{ user:'MR', panel:'Complete Blood Count', date:'Sept 2, 2026', lang:'Filipino', audio:'Played · 2×', flagged:2, status:'warn',
+      tests:[
+        {name:'Hemoglobin', value:'14.5 g/dL', range:'12.0 – 16.0 g/dL', flag:'ok'},
+        {name:'White Blood Cells', value:'12.4 ×10⁹/L', range:'4.5 – 11.0 ×10⁹/L', flag:'high'},
+        {name:'Platelets', value:'142 ×10⁹/L', range:'150 – 450 ×10⁹/L', flag:'low'}
+      ]},
+    '10501':{ user:'RT', panel:'Fasting Glucose', date:'Sept 2, 2026', lang:'Cebuano', audio:'Not played', flagged:1, status:'warn',
+      tests:[ {name:'Fasting Glucose', value:'118 mg/dL', range:'70 – 99 mg/dL', flag:'high'} ]},
+    '10499':{ user:'AN', panel:'Lipid Profile', date:'Sept 1, 2026', lang:'Ilocano', audio:'Played · 1×', flagged:0, status:'ok',
+      tests:[
+        {name:'LDL Cholesterol', value:'92 mg/dL', range:'< 100 mg/dL', flag:'ok'},
+        {name:'HDL Cholesterol', value:'54 mg/dL', range:'> 40 mg/dL', flag:'ok'}
+      ]},
+    '10496':{ user:'KP', panel:'Urinalysis', date:'Aug 31, 2026', lang:'English', audio:'Not played', flagged:0, status:'ok',
+      tests:[ {name:'Protein', value:'Negative', range:'Negative', flag:'ok'} ]},
+    '10488':{ user:'GU', panel:'Thyroid Panel', date:'Aug 30, 2026', lang:'Hiligaynon', audio:'Played · 3×', flagged:1, status:'warn',
+      tests:[ {name:'TSH', value:'5.8 mIU/L', range:'0.4 – 4.0 mIU/L', flag:'high'} ]},
+    '10482':{ user:'NS', panel:'Complete Blood Count', date:'Aug 29, 2026', lang:'Filipino', audio:'Not played', flagged:0, status:'err',
+      tests:[ {name:'—', value:'—', range:'Processing failed at capture step', flag:'ok'} ]}
+  };
+
+
+  const USERS = {
+    'MR':{ name:'Marisol Reyes', email:'marisol.reyes@email.com', reports:6, lang:'Filipino', active:'2 min ago', status:'ok', flags:3, audio:14 },
+    'RT':{ name:'Ramon Torres', email:'ramon.torres@email.com', reports:3, lang:'Cebuano', active:'11 min ago', status:'ok', flags:1, audio:2 },
+    'AN':{ name:'Aling Nena', email:'aling.nena@email.com', reports:9, lang:'Ilocano', active:'44 min ago', status:'ok', flags:2, audio:21 },
+    'KP':{ name:'Kevin Padilla', email:'kevin.padilla@email.com', reports:2, lang:'English', active:'1 hr ago', status:'ok', flags:0, audio:0 },
+    'GU':{ name:'Grace Uy', email:'grace.uy@email.com', reports:5, lang:'Hiligaynon', active:'3 hrs ago', status:'inactive', flags:1, audio:6 },
+    'NS':{ name:'Noel Santos', email:'noel.santos@email.com', reports:4, lang:'Filipino', active:'1 day ago', status:'inactive', flags:0, audio:3 }
+  };
+
+
+  // ---- Users table ----
+  (function(){
+    const wrap = document.getElementById('users-body');
+    Object.keys(USERS).forEach(id=>{
+      const u = USERS[id];
+      const init = u.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+      const pill = u.status==='ok' ? '<span class="pill ok">Active</span>' : '<span class="pill info">Inactive</span>';
+      wrap.innerHTML += `<tr class="clickable" onclick="openUserDetail('${id}')">
+        <td><div class="cell-user"><div class="av">${init}</div><div><h5>${u.name}</h5><span>${u.email}</span></div></div></td>
+        <td>${u.reports}</td>
+        <td>${u.lang}</td>
+        <td>${u.active}</td>
+        <td>${pill}</td>
+        <td><button class="link-btn" onclick="event.stopPropagation(); openUserDetail('${id}')">View</button></td>
+      </tr>`;
+    });
+  })();
+
+
+  // ---- Reports table ----
+  (function(){
+    const wrap = document.getElementById('reports-body');
+    Object.keys(REPORTS).forEach(id=>{
+      const r = REPORTS[id];
+      const u = USERS[r.user];
+      const pill = r.status==='ok' ? '<span class="pill ok">Processed</span>' : r.status==='warn' ? '<span class="pill warn">Flagged</span>' : '<span class="pill err">Error</span>';
+      const init = u.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+      wrap.innerHTML += `<tr class="clickable" onclick="openReportDetail('${id}')">
+        <td>#${id}</td>
+        <td><div class="cell-user"><div class="av">${init}</div><div><h5>${u.name}</h5></div></div></td>
+        <td>${r.panel}</td>
+        <td>${r.date}</td>
+        <td>${r.flagged}</td>
+        <td>${pill}</td>
+        <td><button class="link-btn" onclick="event.stopPropagation(); openReportDetail('${id}')">View</button></td>
+      </tr>`;
+    });
+  })();
+
+
+  // ---- User detail ----
+  function openUserDetail(id){
+    const u = USERS[id];
+    const init = u.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    document.getElementById('ud-init').textContent = init;
+    document.getElementById('ud-name').textContent = u.name;
+    document.getElementById('ud-email').textContent = u.email;
+    document.getElementById('ud-reports').textContent = u.reports;
+    document.getElementById('ud-flags').textContent = u.flags;
+    document.getElementById('ud-audio').textContent = u.audio;
+    document.getElementById('ud-tags').innerHTML =
+      `<span class="pill info">${u.lang}</span>` + (u.status==='ok' ? '<span class="pill ok">Active</span>' : '<span class="pill info">Inactive</span>');
+
+
+    const body = document.getElementById('ud-reports-body');
+    body.innerHTML = '';
+    Object.keys(REPORTS).filter(rid=>REPORTS[rid].user===id).forEach(rid=>{
+      const r = REPORTS[rid];
+      const pill = r.status==='ok' ? '<span class="pill ok">Processed</span>' : r.status==='warn' ? '<span class="pill warn">Flagged</span>' : '<span class="pill err">Error</span>';
+      body.innerHTML += `<tr class="clickable" onclick="openReportDetail('${rid}')">
+        <td>#${rid}</td><td>${r.panel}</td><td>${r.date}</td><td>${r.lang}</td><td>${r.flagged}</td><td>${pill}</td>
+      </tr>`;
+    });
+    if(!body.innerHTML){ body.innerHTML = '<tr><td colspan="6" style="color:var(--ink-500);">No reports uploaded yet.</td></tr>'; }
+
+
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-user-detail').classList.add('active');
+    document.getElementById('view-title').textContent = VIEW_META['user-detail'].title;
+    document.getElementById('view-sub').textContent = VIEW_META['user-detail'].sub;
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.view==='users'));
+    document.querySelector('.content').scrollTop = 0;
+  }
+
+
+  // ---- Report detail ----
+  function openReportDetail(id){
+    const r = REPORTS[id];
+    const u = USERS[r.user];
+    document.getElementById('rd-title').textContent = r.panel + '  ·  #' + id;
+    const pill = r.status==='ok' ? 'pill ok' : r.status==='warn' ? 'pill warn' : 'pill err';
+    const pillText = r.status==='ok' ? 'Processed' : r.status==='warn' ? 'Flagged' : 'Error';
+    const pillEl = document.getElementById('rd-status');
+    pillEl.className = pill; pillEl.textContent = pillText;
+    document.getElementById('rd-user').textContent = u.name;
+    document.getElementById('rd-date').textContent = r.date;
+    document.getElementById('rd-lang').textContent = r.lang;
+    document.getElementById('rd-audio').textContent = r.audio;
+
+
+    const wrap = document.getElementById('rd-tests');
+    wrap.innerHTML = '';
+    r.tests.forEach(t=>{
+      const pillClass = t.flag==='ok' ? 'pill ok' : t.flag==='high' ? 'pill warn' : 'pill err';
+      const pillLabel = t.flag==='ok' ? 'In range' : t.flag==='high' ? 'Above' : 'Below';
+      wrap.innerHTML += `<div class="test-detail-row">
+        <div class="mid"><h4>${t.name}</h4><div class="range">${t.range}</div></div>
+        <span class="${pillClass}">${pillLabel}</span>
+        <div class="val">${t.value}</div>
+      </div>`;
+    });
+
+
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-report-detail').classList.add('active');
+    document.getElementById('view-title').textContent = VIEW_META['report-detail'].title;
+    document.getElementById('view-sub').textContent = VIEW_META['report-detail'].sub;
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.view==='reports'));
+    document.querySelector('.content').scrollTop = 0;
+  }
+
+
+  // ---- Languages page: users by language ----
+  (function(){
+    const counts = {};
+    Object.values(USERS).forEach(u=>{ counts[u.lang] = (counts[u.lang]||0) + 1; });
+    const total = Object.values(USERS).length;
+    const wrap = document.getElementById('lang-users');
+    Object.keys(counts).forEach(lang=>{
+      const pct = Math.round((counts[lang]/total)*100);
+      wrap.innerHTML += `<div class="breakdown-row"><div class="name">${lang}</div><div class="track"><div class="fill" style="width:${pct}%;"></div></div><div class="pct">${counts[lang]}</div></div>`;
+    });
+  })();
+
+
+  // ---- Pipeline steps ----
+  const STEPS = [
+    {name:'Capture', desc:'Scanning the uploaded document', lat:'0.6s', pct:99.8},
+    {name:'Identify', desc:'Finding test names, values, ranges', lat:'1.1s', pct:99.2},
+    {name:'Match', desc:'Checking the medical knowledge base', lat:'0.9s', pct:99.9},
+    {name:'Explain', desc:'Writing the plain-language explanation', lat:'1.7s', pct:98.6},
+    {name:'Deliver', desc:'Preparing the results for the app', lat:'0.5s', pct:100}
+  ];
+  (function(){
+    const wrap = document.getElementById('pipeline-steps');
+    STEPS.forEach((s,i)=>{
+      wrap.innerHTML += `<div class="card step-card">
+        <div class="snum">${i+1}</div>
+        <div class="mid"><h4>${s.name}</h4><span>${s.desc}</span></div>
+        <div class="stat"><b>${s.lat}</b><small>${s.pct}% success</small></div>
+      </div>`;
+    });
+  })();
+
+
+  const ERRORS = [
+    {time:'11:42 AM', report:'10482', step:'Capture', msg:'Image resolution too low to read reliably'},
+    {time:'9:15 AM', report:'10470', step:'Match', msg:'Test name not found in knowledge base'},
+    {time:'7:03 AM', report:'10461', step:'Explain', msg:'Timed out generating audio narration'}
+  ];
+  (function(){
+    const wrap = document.getElementById('errors-body');
+    ERRORS.forEach(e=>{
+      wrap.innerHTML += `<tr><td>${e.time}</td><td>#${e.report}</td><td>${e.step}</td><td>${e.msg}</td></tr>`;
+    });
+  })();
+</script>
+</body>
+</html>
