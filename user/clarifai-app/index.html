@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLARIFAI — Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="stage-label">CLARIFAI — clickable walkthrough &nbsp;·&nbsp; tap the CTA, the tab bar, and any report or test row</div>
+
+<div class="device">
+  <div class="screen">
+
+    <!-- ============ WELCOME ============ -->
+    <div class="panel active welcome-panel" data-panel="welcome">
+      <div class="statusbar">
+        <span>9:41</span>
+        <div class="icons">
+          <svg viewBox="0 0 20 12" fill="none"><rect x="0" y="7" width="3" height="5" rx="0.5" fill="currentColor"/><rect x="5" y="4.5" width="3" height="7.5" rx="0.5" fill="currentColor"/><rect x="10" y="2" width="3" height="10" rx="0.5" fill="currentColor"/><rect x="15" y="0" width="3" height="12" rx="0.5" fill="currentColor"/></svg>
+          <svg viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="20" height="11" rx="3" stroke="currentColor"/><rect x="2" y="2" width="15" height="8" rx="1.5" fill="currentColor"/><rect x="21.5" y="4" width="2" height="4" rx="1" fill="currentColor"/></svg>
+        </div>
+      </div>
+      <div class="welcome-wrap">
+        <div class="welcome-logo"><img src="clarifai-symbol.png" alt="CLARIFAI logo"></div>
+        <div class="eyebrow">UNDERSTAND YOUR RESULTS</div>
+        <h1>Lab results,<br>made clear.</h1>
+        <p class="lead">CLARIFAI turns complex laboratory reports into simple, understandable explanations — so you can better understand what your results mean.</p>
+        <button class="primary-btn welcome-btn" onclick="go('login')">Get Started <span>→</span></button>
+        <p class="welcome-note">Your results. Your understanding. Your next conversation.</p>
+      </div>
+    </div>
+
+    <!-- ============ LOGIN ============ -->
+    <div class="panel login-panel" data-panel="login">
+      <div class="statusbar">
+        <span>9:41</span>
+        <div class="icons">
+          <svg viewBox="0 0 20 12" fill="none"><rect x="0" y="7" width="3" height="5" rx="0.5" fill="currentColor"/><rect x="5" y="4.5" width="3" height="7.5" rx="0.5" fill="currentColor"/><rect x="10" y="2" width="3" height="10" rx="0.5" fill="currentColor"/><rect x="15" y="0" width="3" height="12" rx="0.5" fill="currentColor"/></svg>
+          <svg viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="20" height="11" rx="3" stroke="currentColor"/><rect x="2" y="2" width="15" height="8" rx="1.5" fill="currentColor"/><rect x="21.5" y="4" width="2" height="4" rx="1" fill="currentColor"/></svg>
+        </div>
+      </div>
+      <div class="backrow">
+        <button class="iconbtn" onclick="go('welcome')" aria-label="Back">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="login-wrap">
+        <div class="login-brand">
+          <div class="mini-logo"><img src="clarifai-symbol.png" alt="CLARIFAI symbol"></div>
+          <h1>Welcome back</h1>
+          <p>Log in to keep your lab reports and explanations in one place.</p>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            <input class="login-input" id="email" type="email" placeholder="you@example.com">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <input class="login-input" id="password" type="password" placeholder="Enter your password">
+          </div>
+        </div>
+
+        <div class="login-options">
+          <label class="remember"><input type="checkbox"> Remember me</label>
+          <button class="forgot" type="button">Forgot password?</button>
+        </div>
+
+        <button class="primary-btn login-btn" onclick="go('home')">Log In</button>
+
+        <div class="login-divider">SECURE &amp; PRIVATE</div>
+        <div class="demo-note"><b>Prototype note:</b> this login is for the CLARIFAI walkthrough. Press Log In to continue to the app.</div>
+      </div>
+    </div>
+
+    <!-- ============ HOME ============ -->
+    <div class="panel" data-panel="home">
+      <div class="statusbar">
+        <span>9:41</span>
+        <div class="icons">
+          <svg viewBox="0 0 20 12" fill="none"><rect x="0" y="7" width="3" height="5" rx="0.5" fill="currentColor"/><rect x="5" y="4.5" width="3" height="7.5" rx="0.5" fill="currentColor"/><rect x="10" y="2" width="3" height="10" rx="0.5" fill="currentColor"/><rect x="15" y="0" width="3" height="12" rx="0.5" fill="currentColor"/></svg>
+          <svg viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="20" height="11" rx="3" stroke="currentColor"/><rect x="2" y="2" width="15" height="8" rx="1.5" fill="currentColor"/><rect x="21.5" y="4" width="2" height="4" rx="1" fill="currentColor"/></svg>
+        </div>
+      </div>
+
+      <div class="home-header">
+        <div class="logo-mark"><img src="clarifai-symbol.png" alt="CLARIFAI symbol"></div>
+        <div class="avatar">M</div>
+      </div>
+
+      <div class="panel-scroll">
+        <div class="greeting">
+          <h1>Kumusta, Marisol</h1>
+          <p>Here's what's new with your lab reports, explained in plain language.</p>
+        </div>
+
+        <div class="upload-cta" onclick="go('upload')">
+          <div class="ic">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 4v11M7 9l5-5 5 5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="tx">
+            <h3>Add a new lab report</h3>
+            <p>Upload a photo or file — we'll translate it in under a minute.</p>
+          </div>
+        </div>
+
+        <div class="section-row"><h2>Recent reports</h2><span>3 total</span></div>
+        <div class="report-list">
+          <div class="report-row card" onclick="go('results')">
+            <div class="dot watch"></div>
+            <div class="mid"><h4>Complete Blood Count</h4><span>Sept 2 · 2 flagged results</span></div>
+            <div class="chev"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+          <div class="report-row card">
+            <div class="dot ok"></div>
+            <div class="mid"><h4>Lipid Profile</h4><span>Aug 20 · within range</span></div>
+            <div class="chev"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+          <div class="report-row card">
+            <div class="dot ok"></div>
+            <div class="mid"><h4>Urinalysis</h4><span>Jul 11 · within range</span></div>
+            <div class="chev"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+        </div>
+
+        <div class="literacy-strip">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 11v5.5M12 8v.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <p><b>CLARIFAI explains — it doesn't diagnose.</b> Bring your reports to your next visit to talk through what they mean for you.</p>
+        </div>
+      </div>
+
+      <div class="tabbar">
+        <button class="tab active" data-tab="home" onclick="go('home')">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 11.5 12 4l8 7.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-9" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Home
+        </button>
+        <button class="tab" data-tab="results" onclick="go('results')">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="3.5" width="14" height="17" rx="2" stroke="currentColor" stroke-width="1.9"/><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+          History
+        </button>
+        <button class="tab scan" onclick="go('upload')">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2.5" stroke="#fff" stroke-width="1.9"/><path d="M8 6l1.2-2h5.6L16 6" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12.5" r="3.4" stroke="#fff" stroke-width="1.9"/></svg>
+        </button>
+        <button class="tab" data-tab="detail" onclick="go('detail')">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M3 12h4l2-7 4 14 2-7h6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Results
+        </button>
+        <button class="tab" data-tab="profile" onclick="go('profile')">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.2" r="3.4" stroke="currentColor" stroke-width="1.9"/><path d="M5 19.5c1.3-3.4 4.1-5 7-5s5.7 1.6 7 5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+          Profile
+        </button>
+      </div>
+    </div>
+
+    <!-- ============ UPLOAD ============ -->
+    <div class="panel" data-panel="upload">
+      <div class="statusbar"><span>9:41</span><div class="icons"><span></span></div></div>
+      <div class="backrow">
+        <div class="iconbtn" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h2 style="font-size:16.5px;">Add a lab report</h2>
+      </div>
+      <div class="panel-scroll">
+        <div class="dropzone" id="dropzone" onclick="mockFile()">
+          <div class="ic">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 16V4M8 8l4-4 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Drop your report here</h3>
+          <p>Or choose an option below. Photos, scans, and PDFs all work.</p>
+        </div>
+
+        <div class="filepreview" id="filepreview">
+          <div class="thumb"><svg viewBox="0 0 24 24" fill="none"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v5h5" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+          <div class="mid"><h4>CBC_Sept2026.jpg</h4><span>2.4 MB · ready to analyze</span></div>
+        </div>
+
+        <div class="upload-actions" style="margin-top:18px;">
+          <button class="ghost-btn" onclick="mockFile()">
+            <svg viewBox="0 0 24 24" fill="none" width="17" height="17"><rect x="3" y="6" width="18" height="13" rx="2.5" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12.5" r="3.2" stroke="currentColor" stroke-width="1.8"/></svg>
+            Take a photo
+          </button>
+          <button class="ghost-btn" onclick="mockFile()">
+            <svg viewBox="0 0 24 24" fill="none" width="17" height="17"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            Choose a file
+          </button>
+        </div>
+      </div>
+      <div class="upload-footer">
+        <button class="primary-btn" onclick="go('processing'); runPipeline();">Analyze report</button>
+      </div>
+    </div>
+
+    <!-- ============ PROCESSING ============ -->
+    <div class="panel" data-panel="processing">
+      <div class="statusbar"><span>9:41</span><div class="icons"><span></span></div></div>
+      <div class="proc-wrap">
+        <div class="proc-mark">
+          <svg viewBox="0 0 48 48" fill="none"><path d="M6 24C13 13 35 13 42 24C35 35 13 35 6 24Z" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><circle cx="24" cy="24" r="6" fill="currentColor"/></svg>
+        </div>
+        <h2>Reading your report</h2>
+        <p>This usually takes a few seconds</p>
+
+        <div class="steps" id="steps">
+          <div class="step" data-step="1">
+            <div><div class="num">1</div><div class="connector"></div></div>
+            <div class="stxt"><h4>Capture</h4><p>Scanning the document you uploaded</p></div>
+          </div>
+          <div class="step" data-step="2">
+            <div><div class="num">2</div><div class="connector"></div></div>
+            <div class="stxt"><h4>Identify</h4><p>Finding test names, values, and ranges</p></div>
+          </div>
+          <div class="step" data-step="3">
+            <div><div class="num">3</div><div class="connector"></div></div>
+            <div class="stxt"><h4>Match</h4><p>Checking against our medical knowledge base</p></div>
+          </div>
+          <div class="step" data-step="4">
+            <div><div class="num">4</div><div class="connector"></div></div>
+            <div class="stxt"><h4>Explain</h4><p>Writing a plain-language explanation</p></div>
+          </div>
+          <div class="step" data-step="5">
+            <div><div class="num">5</div></div>
+            <div class="stxt"><h4>Deliver</h4><p>Preparing your results</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ RESULTS ============ -->
+    <div class="panel" data-panel="results">
+      <div class="statusbar"><span>9:41</span><div class="icons"><span></span></div></div>
+      <div class="backrow">
+        <div class="iconbtn" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h2 style="font-size:16.5px;">Complete Blood Count</h2>
+      </div>
+      <div class="panel-scroll">
+        <div class="results-summary">
+          <div class="big">2</div>
+          <div class="cap">results are outside your lab's typical range — tap any test to see what it means</div>
+        </div>
+
+        <div class="test-row card" onclick="openTest('hgb')">
+          <div class="mid"><h4>Hemoglobin</h4><div class="val">14.5 g/dL</div></div>
+          <div class="flag normal">In range</div>
+        </div>
+        <div class="test-row card" onclick="openTest('wbc')">
+          <div class="mid"><h4>White Blood Cells</h4><div class="val">12.4 ×10⁹/L</div></div>
+          <div class="flag high"><svg viewBox="0 0 24 24" fill="none"><path d="M6 15l6-6 6 6" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>Above</div>
+        </div>
+        <div class="test-row card" onclick="openTest('glu')">
+          <div class="mid"><h4>Fasting Glucose</h4><div class="val">118 mg/dL</div></div>
+          <div class="flag high"><svg viewBox="0 0 24 24" fill="none"><path d="M6 15l6-6 6 6" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>Above</div>
+        </div>
+        <div class="test-row card" onclick="openTest('crea')">
+          <div class="mid"><h4>Creatinine</h4><div class="val">0.9 mg/dL</div></div>
+          <div class="flag normal">In range</div>
+        </div>
+        <div class="test-row card" onclick="openTest('plt')">
+          <div class="mid"><h4>Platelets</h4><div class="val">142 ×10⁹/L</div></div>
+          <div class="flag low"><svg viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="var(--ember-500)" stroke-width="3" stroke-linecap="round"/></svg>Below</div>
+        </div>
+      </div>
+      <div class="tabbar">
+        <button class="tab" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none"><path d="M4 11.5 12 4l8 7.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-9" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Home</button>
+        <button class="tab active"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="3.5" width="14" height="17" rx="2" stroke="currentColor" stroke-width="1.9"/><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>History</button>
+        <button class="tab scan" onclick="go('upload')"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2.5" stroke="#fff" stroke-width="1.9"/><path d="M8 6l1.2-2h5.6L16 6" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12.5" r="3.4" stroke="#fff" stroke-width="1.9"/></svg></button>
+        <button class="tab" onclick="go('detail')"><svg viewBox="0 0 24 24" fill="none"><path d="M3 12h4l2-7 4 14 2-7h6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Results</button>
+        <button class="tab" onclick="go('profile')"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.2" r="3.4" stroke="currentColor" stroke-width="1.9"/><path d="M5 19.5c1.3-3.4 4.1-5 7-5s5.7 1.6 7 5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>Profile</button>
+      </div>
+    </div>
+
+    <!-- ============ DETAIL ============ -->
+    <div class="panel" data-panel="detail">
+      <div class="statusbar"><span>9:41</span><div class="icons"><span></span></div></div>
+      <div class="backrow">
+        <div class="iconbtn" onclick="go('results')"><svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h2 style="font-size:16.5px;">Test result</h2>
+      </div>
+      <div class="panel-scroll">
+        <div class="detail-hero">
+          <div class="eyebrow" id="d-eyebrow">White blood cells</div>
+          <h1 id="d-title">White Blood Cell Count</h1>
+          <div class="value-row"><div class="v" id="d-value">12.4</div><div class="u" id="d-unit">×10⁹/L</div></div>
+
+          <div class="gauge">
+            <div class="gauge-track"><div class="gauge-fill"></div><div class="gauge-marker" id="d-marker" style="left:78%;"></div></div>
+            <div class="gauge-labels"><span id="d-lo">4.5</span><span id="d-hi">11.0</span></div>
+          </div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-group" id="grp-level">
+            <button class="toggle-opt active" data-level="simple" onclick="setLevel('simple')">Simple</button>
+            <button class="toggle-opt" data-level="technical" onclick="setLevel('technical')">Technical</button>
+          </div>
+          <div class="toggle-group" id="grp-lang">
+            <button class="toggle-opt active" data-lang="en" onclick="setLang('en')">English</button>
+            <button class="toggle-opt" data-lang="fil" onclick="setLang('fil')">Filipino</button>
+          </div>
+        </div>
+
+        <div class="explain-card card">
+          <div class="tag" id="d-tag">
+            <svg viewBox="0 0 24 24" fill="none" width="12" height="12"><path d="M6 15l6-6 6 6" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+            Above your lab's range
+          </div>
+          <p id="d-explain">White blood cells help your body fight infection. Your count is a bit higher than what your lab expects for a healthy adult — this can happen for many reasons, including a recent infection. It's not a diagnosis on its own.</p>
+        </div>
+
+        <div class="audio-row card">
+          <button class="playbtn" id="playbtn" onclick="toggleAudio()">
+            <svg id="play-icon" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7L8 5Z" fill="#fff"/></svg>
+          </button>
+          <div class="waves" id="waves"></div>
+          <span id="audio-time">0:00 / 0:24</span>
+        </div>
+
+        <div class="disclaimer">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 11v5.5M12 8v.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <p>This explains what your result means — it doesn't diagnose a condition or replace medical advice. Share this report with your doctor for guidance specific to you.</p>
+        </div>
+      </div>
+      <div class="tabbar">
+        <button class="tab" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none"><path d="M4 11.5 12 4l8 7.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-9" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Home</button>
+        <button class="tab" onclick="go('results')"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="3.5" width="14" height="17" rx="2" stroke="currentColor" stroke-width="1.9"/><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>History</button>
+        <button class="tab scan" onclick="go('upload')"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2.5" stroke="#fff" stroke-width="1.9"/><path d="M8 6l1.2-2h5.6L16 6" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12.5" r="3.4" stroke="#fff" stroke-width="1.9"/></svg></button>
+        <button class="tab active"><svg viewBox="0 0 24 24" fill="none"><path d="M3 12h4l2-7 4 14 2-7h6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Results</button>
+        <button class="tab" onclick="go('profile')"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.2" r="3.4" stroke="currentColor" stroke-width="1.9"/><path d="M5 19.5c1.3-3.4 4.1-5 7-5s5.7 1.6 7 5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>Profile</button>
+      </div>
+    </div>
+
+    <!-- ============ PROFILE ============ -->
+    <div class="panel" data-panel="profile">
+      <div class="statusbar"><span>9:41</span><div class="icons"><span></span></div></div>
+      <div class="panel-scroll" style="padding-top:14px;">
+        <div class="prof-head">
+          <div class="avatar">M</div>
+          <div><h3>Marisol Reyes</h3><span>marisol.reyes@email.com</span></div>
+        </div>
+
+        <div class="settings-group">
+          <h4>Language &amp; accessibility</h4>
+          <div class="card">
+            <div class="setting-row">
+              <div class="lbl"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h9M8 4v2c0 4.5-2 8-5 10M6 12c1.8 2 4.6 3.2 7 3.4M13 21l4-9 4 9M14.5 18h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Report language</div>
+              <div class="val">Filipino ›</div>
+            </div>
+            <div class="setting-row">
+              <div class="lbl"><svg viewBox="0 0 24 24" fill="none"><path d="M11 5 6 9H3v6h3l5 4V5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M16 9a4 4 0 0 1 0 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Audio explanations</div>
+              <div class="switch on" onclick="this.classList.toggle('on')"><i></i></div>
+            </div>
+            <div class="setting-row">
+              <div class="lbl"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h16M4 7h16M4 17h10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Simplified text by default</div>
+              <div class="switch on" onclick="this.classList.toggle('on')"><i></i></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <h4>Privacy</h4>
+          <div class="card">
+            <div class="setting-row">
+              <div class="lbl"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.7"/></svg>Face ID lock</div>
+              <div class="switch on" onclick="this.classList.toggle('on')"><i></i></div>
+            </div>
+            <div class="setting-row">
+              <div class="lbl"><svg viewBox="0 0 24 24" fill="none"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Download my reports</div>
+              <div class="val">›</div>
+            </div>
+            <div class="setting-row">
+              <div class="lbl"><svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Delete account &amp; data</div>
+              <div class="val">›</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tabbar">
+        <button class="tab" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none"><path d="M4 11.5 12 4l8 7.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-9" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Home</button>
+        <button class="tab" onclick="go('results')"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="3.5" width="14" height="17" rx="2" stroke="currentColor" stroke-width="1.9"/><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>History</button>
+        <button class="tab scan" onclick="go('upload')"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2.5" stroke="#fff" stroke-width="1.9"/><path d="M8 6l1.2-2h5.6L16 6" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12.5" r="3.4" stroke="#fff" stroke-width="1.9"/></svg></button>
+        <button class="tab" onclick="go('detail')"><svg viewBox="0 0 24 24" fill="none"><path d="M3 12h4l2-7 4 14 2-7h6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Results</button>
+        <button class="tab active"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.2" r="3.4" stroke="currentColor" stroke-width="1.9"/><path d="M5 19.5c1.3-3.4 4.1-5 7-5s5.7 1.6 7 5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>Profile</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

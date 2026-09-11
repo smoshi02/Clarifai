@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLARIFAI Admin — Control Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+
+
+<!-- ================= SIDEBAR ================= -->
+<div class="sidebar">
+  <div class="brand" onclick="showView('dashboard')">
+    <div class="brand-row">
+      <img class="brand-symbol" src="clarifai-symbol.png" alt="CLARIFAI">
+      <span class="brand-word">CLARIFAI</span>
+    </div>
+    <span class="brand-sub">Admin Control Center</span>
+  </div>
+
+
+
+
+  <div class="nav-group">
+    <button class="nav-item active" data-view="dashboard" onclick="showView('dashboard')">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="3.5" width="8" height="8" rx="2" stroke="currentColor" stroke-width="1.8"/><rect x="12.5" y="3.5" width="8" height="5" rx="2" stroke="currentColor" stroke-width="1.8"/><rect x="12.5" y="10.5" width="8" height="10" rx="2" stroke="currentColor" stroke-width="1.8"/><rect x="3.5" y="13.5" width="8" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/></svg>
+      Dashboard
+    </button>
+    <button class="nav-item" data-view="users" onclick="showView('users')">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.2" stroke="currentColor" stroke-width="1.8"/><path d="M3 19c1.3-3.2 3.6-4.7 6-4.7s4.7 1.5 6 4.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M15.5 5.3a3.2 3.2 0 0 1 0 6M18 19c-.6-1.6-1.5-2.8-2.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      Users
+    </button>
+    <button class="nav-item" data-view="reports" onclick="showView('reports')">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="3.5" width="14" height="17" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      Reports
+      <span class="nav-badge">1.2k</span>
+    </button>
+  </div>
+
+
+
+
+  <div class="nav-group">
+    <div class="nav-label">INSIGHTS</div>
+    <button class="nav-item" data-view="languages" onclick="showView('languages')">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h9M8 4v2c0 4.5-2 8-5 10M6 12c1.8 2 4.6 3.2 7 3.4M13 21l4-9 4 9M14.5 18h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Language usage
+    </button>
+    <button class="nav-item" data-view="pipeline" onclick="showView('pipeline')">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 1 1 16 0 8 8 0 0 1-16 0Z" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v4l2.5 2.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Pipeline health
+    </button>
+  </div>
+
+
+
+
+  <div class="nav-group">
+    <div class="nav-label">ADMIN</div>
+    <button class="nav-item" data-view="settings" onclick="showView('settings')">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M12 3v2.2M12 18.8V21M4.2 12H2M22 12h-2.2M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M5.6 18.4l1.6-1.6M16.8 7.2l1.6-1.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      Settings
+    </button>
+  </div>
+
+
+
+
+  <div class="side-foot">
+    <div class="av">JD</div>
+    <div><h5>Jun Dela Cruz</h5><span>Admin (view-only)</span></div>
+  </div>
+  <div class="side-note">AI-generated explanations are delivered to patients through the app. This console is for authorized monitoring and quality assurance only — institutional staff cannot edit or override explanations.</div>
+</div>
+
+
+
+
+<!-- ================= MAIN ================= -->
+<div class="main">
+  <div class="topbar">
+    <div>
+      <h2 id="view-title">Dashboard</h2>
+      <div class="sub" id="view-sub">Institutional usage monitoring across the CLARIFAI app</div>
+    </div>
+    <div class="topbar-right">
+      <div class="search-box"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Search reports, patient IDs…</div>
+      <div class="icon-pill"><div class="dot"></div><svg viewBox="0 0 24 24" fill="none"><path d="M6 9a6 6 0 0 1 12 0c0 4 1.5 5.5 2 6H4c.5-.5 2-2 2-6Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 19a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(180deg,var(--ember-500),var(--ember-600));color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:600;font-size:12px;">JD</div>
+    </div>
+  </div>
+
+
+
+
+  <div class="content">
+
+
+
+
+    <!-- ============ DASHBOARD ============ -->
+    <div class="view active" id="view-dashboard">
+      <div class="privacy-banner">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 20 7v5c0 4.5-3.1 7.9-8 9-4.9-1.1-8-4.5-8-9V7l8-4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9.5 12 11 13.5l3.5-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div><b>Monitoring scope:</b> This admin console summarizes platform usage, laboratory flags, processing performance, language usage, and system health. Patient-facing explanations remain controlled by CLARIFAI and cannot be edited or overridden here.</div>
+      </div>
+      <div class="grid-4">
+        <div class="card kpi">
+          <div class="top"><div class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4v11M7 9l5-5 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="trend up">▲ 12%</div></div>
+          <div class="num">348</div>
+          <div class="lbl">Reports processed today</div>
+        </div>
+        <div class="card kpi">
+          <div class="top"><div class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.2" stroke="currentColor" stroke-width="1.8"/><path d="M3 19c1.3-3.2 3.6-4.7 6-4.7s4.7 1.5 6 4.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div><div class="trend up">▲ 4%</div></div>
+          <div class="num">5,204</div>
+          <div class="lbl">Active users this week</div>
+        </div>
+        <div class="card kpi">
+          <div class="top"><div class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 15V9m0 0l-3 3m3-3l3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="trend down">▼ 2%</div></div>
+          <div class="num">31%</div>
+          <div class="lbl">Laboratory flags this week</div>
+        </div>
+        <div class="card kpi">
+          <div class="top"><div class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v4l2.5 2.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="trend up">▲ 0.3s</div></div>
+          <div class="num">4.8s</div>
+          <div class="lbl">Avg. processing time</div>
+        </div>
+      </div>
+
+
+
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="panel-head"><h3>Reports processed — last 7 days</h3><span class="note">348 today</span></div>
+          <div class="panel-body">
+            <div class="bar-chart" id="trend-chart"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="panel-head"><h3>Most common laboratory flags</h3><span class="note">this week</span></div>
+          <div class="panel-body" id="flagged-breakdown"></div>
+        </div>
+      </div>
+
+
+
+
+      <div class="grid-2 even">
+        <div class="card">
+          <div class="panel-head"><h3>Report language usage</h3></div>
+          <div class="panel-body" id="lang-usage"></div>
+        </div>
+        <div class="card">
+          <div class="panel-head"><h3>Recent activity</h3><span class="note">live</span></div>
+          <div class="panel-body" id="activity-feed"></div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <!-- ============ USER ANALYTICS (list) ============ -->
+    <div class="view" id="view-users">
+      <div class="grid-3">
+        <div class="card kpi"><div class="num">5,204</div><div class="lbl">Total patient accounts</div></div>
+        <div class="card kpi"><div class="num">312</div><div class="lbl">New accounts this week</div></div>
+        <div class="card kpi"><div class="num">78%</div><div class="lbl">Prefer a local language</div></div>
+      </div>
+      <div class="toolbar">
+        <div class="chips">
+          <div class="chip active">All accounts</div>
+          <div class="chip">Most active</div>
+          <div class="chip">New accounts</div>
+        </div>
+        <div class="search-box"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Search patient IDs…</div>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Patient ID</th><th>Reports</th><th>Preferred language</th><th>Last active</th><th>Status</th><th></th></tr></thead>
+          <tbody id="users-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+
+
+
+    <!-- ============ USER DETAIL ============ -->
+    <div class="view" id="view-user-detail">
+      <div class="backrow">
+        <div class="iconbtn" onclick="showView('users')"><svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3 style="font-size:15px;">Back to user analytics</h3>
+      </div>
+      <div class="card profile-card">
+        <div class="av" id="ud-init">MR</div>
+        <div class="info">
+          <h3 id="ud-name">Patient #CLF-001</h3>
+          <span id="ud-email">Identifiable account details restricted by access policy</span>
+        </div>
+        <div class="tags" id="ud-tags"></div>
+      </div>
+      <div class="grid-3">
+        <div class="card kpi"><div class="num" id="ud-reports">6</div><div class="lbl">Reports uploaded</div></div>
+        <div class="card kpi"><div class="num" id="ud-flags">3</div><div class="lbl">Laboratory flags, all time</div></div>
+        <div class="card kpi"><div class="num" id="ud-audio">14</div><div class="lbl">Audio explanations played</div></div>
+      </div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="panel-head"><h3>Report history</h3><span class="note">authorized monitoring view</span></div>
+        <div class="panel-body" style="padding-top:6px;">
+          <table>
+            <thead><tr><th>Report</th><th>Panel</th><th>Date</th><th>Language</th><th>Flagged</th><th>Status</th></tr></thead>
+            <tbody id="ud-reports-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <!-- ============ REPORTS (list) ============ -->
+    <div class="view" id="view-reports">
+      <div class="privacy-banner">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 20 7v5c0 4.5-3.1 7.9-8 9-4.9-1.1-8-4.5-8-9V7l8-4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9.5 12 11 13.5l3.5-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div><b>Privacy-aware monitoring:</b> Report records are shown using anonymized patient IDs in this prototype. Access to identifiable health information should be restricted to authorized personnel under CLARIFAI's privacy and access controls.</div>
+      </div>
+      <div class="toolbar">
+        <div class="chips">
+          <div class="chip active">All (1,204)</div>
+          <div class="chip">Has lab flags (372)</div>
+          <div class="chip">Processing (6)</div>
+          <div class="chip">Errors (3)</div>
+        </div>
+        <div class="search-box"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Filter by user or panel…</div>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Report</th><th>Patient ID</th><th>Panel</th><th>Uploaded</th><th>Lab flags</th><th>Status</th><th></th></tr></thead>
+          <tbody id="reports-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+
+
+
+    <!-- ============ REPORT DETAIL ============ -->
+    <div class="view" id="view-report-detail">
+      <div class="backrow">
+        <div class="iconbtn" onclick="showView('reports')"><svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3 style="font-size:15px;">Back to reports</h3>
+      </div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="panel-head"><h3 id="rd-title">Complete Blood Count</h3><span class="pill" id="rd-status"></span></div>
+        <div class="meta-strip">
+          <div class="m"><h5>Patient ID</h5><div id="rd-user">—</div></div>
+          <div class="m"><h5>Date</h5><div id="rd-date">—</div></div>
+          <div class="m"><h5>Report language</h5><div id="rd-lang">—</div></div>
+          <div class="m"><h5>Audio played</h5><div id="rd-audio">—</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="panel-head"><div><h3>Result explanation</h3><div class="scope-note">Original values and laboratory reference ranges are preserved; this view reflects the patient-facing explanation layer.</div></div><span class="pill info">View-only</span></div>
+        <div class="panel-body" id="rd-tests"></div>
+      </div>
+    </div>
+
+
+
+
+    <!-- ============ LANGUAGES ============ -->
+    <div class="view" id="view-languages">
+      <div class="grid-2 even">
+        <div class="card">
+          <div class="panel-head"><h3>Report language usage</h3><span class="note">share of processed reports</span></div>
+          <div class="panel-body" id="lang-coverage"></div>
+        </div>
+        <div class="card">
+          <div class="panel-head"><h3>Patient accounts by preferred language</h3></div>
+          <div class="panel-body" id="lang-users"></div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <!-- ============ PIPELINE ============ -->
+    <div class="view" id="view-pipeline">
+      <div class="grid-3">
+        <div class="card kpi"><div class="num">99.4%</div><div class="lbl">Pipeline uptime, 30 days</div></div>
+        <div class="card kpi"><div class="num">6</div><div class="lbl">Reports in queue right now</div></div>
+        <div class="card kpi"><div class="num">3</div><div class="lbl">Errors in the last 24 hours</div></div>
+      </div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="panel-head"><h3>Pipeline steps — average latency</h3></div>
+        <div class="panel-body" style="display:flex; flex-direction:column; gap:10px;" id="pipeline-steps"></div>
+      </div>
+      <div class="card">
+        <div class="panel-head"><h3>Recent errors</h3><span class="note">last 24 hours</span></div>
+        <div class="panel-body" style="padding-top:6px;">
+          <table>
+            <thead><tr><th>Time</th><th>Report</th><th>Step</th><th>Message</th></tr></thead>
+            <tbody id="errors-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <!-- ============ SETTINGS ============ -->
+    <div class="view" id="view-settings">
+      <div class="card" style="margin-bottom:16px;">
+        <div class="panel-head"><h3>Account</h3></div>
+        <div class="settings-row"><div><div class="lbl">Jun Dela Cruz</div><div class="desc">jun.delacruz@clarifai.ph · Admin (view-only access)</div></div><button class="link-btn">Edit</button></div>
+        <div class="settings-row"><div><div class="lbl">Two-factor authentication</div><div class="desc">Require a code at every admin sign-in</div></div><div class="switch on" onclick="this.classList.toggle('on')"><i></i></div></div>
+      </div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="panel-head"><h3>Notifications</h3></div>
+        <div class="settings-row"><div><div class="lbl">Pipeline errors</div><div class="desc">Email the on-call admin when a report fails to process</div></div><div class="switch on" onclick="this.classList.toggle('on')"><i></i></div></div>
+        <div class="settings-row"><div><div class="lbl">Weekly summary</div><div class="desc">Usage and flagged-result digest every Monday</div></div><div class="switch on" onclick="this.classList.toggle('on')"><i></i></div></div>
+      </div>
+      <div class="card">
+        <div class="panel-head"><h3>Data &amp; access</h3></div>
+        <div class="settings-row"><div><div class="lbl">Admin roles</div><div class="desc">Manage authorized roles for usage and quality-assurance monitoring</div></div><button class="link-btn">Manage</button></div>
+        <div class="settings-row"><div><div class="lbl">Export usage report</div><div class="desc">Download a de-identified CSV of platform usage and processing activity</div></div><button class="link-btn">Export</button></div>
+      </div>
+    </div>
+
+
+
+
+  </div>
+</div>
+
+
+
+
+<script src="script.js"></script>
+</body>
+</html>
