@@ -8,6 +8,92 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+
+<style>
+  /* CLARIFAI simple result explanation layer */
+  .explanation-intro {
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    margin-bottom:14px;
+    padding:12px 14px;
+    border-radius:12px;
+    background:rgba(234,91,69,.06);
+    border:1px solid rgba(234,91,69,.14);
+  }
+  .explanation-intro strong {
+    font-family:'Poppins',sans-serif;
+    font-size:13px;
+  }
+  .explanation-intro span {
+    font-size:12px;
+    color:var(--muted,#6b7280);
+  }
+  .result-list {
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .result-item {
+    padding:15px;
+    border:1px solid var(--line,#e8e8e8);
+    border-radius:14px;
+    background:#fff;
+  }
+  .result-top {
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .result-name {
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    font-size:13px;
+  }
+  .result-range {
+    margin-top:3px;
+    font-size:11px;
+    color:var(--muted,#6b7280);
+  }
+  .result-value {
+    margin:10px 0 11px;
+    font-size:18px;
+    font-weight:700;
+  }
+  .simple-explanation {
+    padding:11px 12px;
+    border-radius:10px;
+    background:#f8f8f8;
+  }
+  .explanation-label {
+    font-size:10px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--muted,#6b7280);
+    margin-bottom:4px;
+  }
+  .simple-explanation p {
+    margin:0;
+    font-size:12px;
+    line-height:1.6;
+  }
+  .safety-note {
+    margin-top:14px;
+    padding:12px 14px;
+    border-radius:10px;
+    font-size:11px;
+    line-height:1.55;
+    color:var(--muted,#6b7280);
+    background:#fafafa;
+    border:1px solid var(--line,#e8e8e8);
+  }
+  @media (max-width:700px) {
+    .result-top { flex-direction:column; }
+  }
+</style>
+
 </head>
 <body>
 
@@ -200,7 +286,7 @@
         <h3 style="font-size:15px;">Back to user analytics</h3>
       </div>
       <div class="card profile-card">
-        <div class="av" id="ud-init">MR</div>
+        <div class="av" id="ud-init">CLF</div>
         <div class="info">
           <h3 id="ud-name">Patient #CLF-001</h3>
           <span id="ud-email">Identifiable account details restricted by access policy</span>
@@ -268,7 +354,7 @@
         </div>
       </div>
       <div class="card">
-        <div class="panel-head"><div><h3>Result explanation</h3><div class="scope-note">Original values and laboratory reference ranges are preserved; this view reflects the patient-facing explanation layer.</div></div><span class="pill info">View-only</span></div>
+        <div class="panel-head"><div><h3>Result explanation</h3><div class="scope-note">Original values and laboratory reference ranges are preserved; this view reflects the patient-facing explanation layer. Language follows the patient&#39;s selected report language.</div></div><span class="pill info">View-only</span></div>
         <div class="panel-body" id="rd-tests"></div>
       </div>
     </div>
@@ -384,33 +470,91 @@
     { id:"RPT-1193", user:"CLF-007", panel:"Liver Function Panel", date:"Sep 11, 2026 16:31", flags:1, status:"Completed", language:"Filipino", audio:"Available" }
   ];
 
-  const demoTests = {
-    "RPT-1204": [
-      ["Hemoglobin","13.8 g/dL","12.0–16.0 g/dL","Normal"],
-      ["White Blood Cell Count","12.4 ×10⁹/L","4.0–11.0 ×10⁹/L","Flagged"],
-      ["Platelets","278 ×10⁹/L","150–450 ×10⁹/L","Normal"],
-      ["Hematocrit","42.1 %","36–46 %","Normal"]
-    ],
-    "RPT-1203": [
-      ["Total Cholesterol","218 mg/dL","< 200 mg/dL","Flagged"],
-      ["HDL Cholesterol","54 mg/dL","≥ 40 mg/dL","Normal"],
-      ["LDL Cholesterol","142 mg/dL","< 100 mg/dL","Flagged"],
-      ["Triglycerides","110 mg/dL","< 150 mg/dL","Normal"]
-    ],
-    "RPT-1202": [
-      ["Fasting Blood Glucose","94 mg/dL","70–99 mg/dL","Normal"]
-    ],
-    "RPT-1201": [
-      ["Protein","Trace","Negative","Flagged"],
-      ["Glucose","Negative","Negative","Normal"],
-      ["Leukocytes","8–10 /hpf","0–5 /hpf","Flagged"],
-      ["Specific Gravity","1.020","1.005–1.030","Normal"]
-    ],
-    "RPT-1200": [
-      ["Hemoglobin","14.2 g/dL","12.0–16.0 g/dL","Normal"],
-      ["White Blood Cell Count","7.6 ×10⁹/L","4.0–11.0 ×10⁹/L","Normal"],
-      ["Platelets","301 ×10⁹/L","150–450 ×10⁹/L","Normal"]
-    ]
+  const demoExplanations = {
+    "RPT-1204": {
+      tests: [
+        { name:"Hemoglobin", value:"13.8 g/dL", range:"12.0–16.0 g/dL", status:"Normal",
+          en:"Your hemoglobin result is within the laboratory's reference range.",
+          fil:"Ang iyong hemoglobin ay nasa loob ng normal na reference range ng laboratoryo.",
+          ilo:"Ti resulta ti hemoglobin-mo ket adda iti uneg ti reference range ti laboratoryo." },
+        { name:"White Blood Cell Count", value:"12.4 ×10⁹/L", range:"4.0–11.0 ×10⁹/L", status:"Flagged",
+          en:"This result is above the laboratory's reference range. A flagged result does not by itself explain why it changed; a healthcare professional can interpret it together with your other information.",
+          fil:"Mas mataas ang resultang ito kaysa sa reference range ng laboratoryo. Ang naka-flag na resulta ay hindi agad nagsasabi kung bakit ito nagbago; isang healthcare professional ang makapagbibigay ng tamang paliwanag kasama ng iba pang impormasyon.",
+          ilo:"Nangato ti resulta ngem iti reference range ti laboratoryo. Ti na-flag a resulta ket saan a mangipakita no apay a nagbaliw; mabalin nga tulungan ti healthcare professional iti panangipatarus kadua dagiti dadduma pay a impormasyon." },
+        { name:"Platelets", value:"278 ×10⁹/L", range:"150–450 ×10⁹/L", status:"Normal",
+          en:"Your platelet result is within the laboratory's reference range.",
+          fil:"Ang iyong platelet count ay nasa loob ng normal na reference range ng laboratoryo.",
+          ilo:"Ti resulta ti platelets-mo ket adda iti uneg ti reference range ti laboratoryo." },
+        { name:"Hematocrit", value:"42.1 %", range:"36–46 %", status:"Normal",
+          en:"Your hematocrit result is within the laboratory's reference range.",
+          fil:"Ang iyong hematocrit ay nasa loob ng normal na reference range ng laboratoryo.",
+          ilo:"Ti resulta ti hematocrit-mo ket adda iti uneg ti reference range ti laboratoryo." }
+      ]
+    },
+    "RPT-1203": {
+      tests: [
+        { name:"Total Cholesterol", value:"218 mg/dL", range:"< 200 mg/dL", status:"Flagged",
+          en:"This result is above the laboratory's reference target. The result should be considered together with your other health information.",
+          fil:"Mas mataas ang resultang ito kaysa sa reference target ng laboratoryo. Dapat itong tingnan kasama ng iba pang impormasyon tungkol sa iyong kalusugan.",
+          ilo:"Nangato ti resulta ngem iti reference target ti laboratoryo. Masapul a kitaen daytoy a kadua dagiti dadduma pay a impormasyon maipanggep iti salun-at." },
+        { name:"HDL Cholesterol", value:"54 mg/dL", range:"≥ 40 mg/dL", status:"Normal",
+          en:"Your HDL result is within the laboratory's reference range.",
+          fil:"Ang iyong HDL result ay nasa loob ng reference range ng laboratoryo.",
+          ilo:"Ti resulta ti HDL-mo ket adda iti uneg ti reference range ti laboratoryo." },
+        { name:"LDL Cholesterol", value:"142 mg/dL", range:"< 100 mg/dL", status:"Flagged",
+          en:"This result is above the laboratory's reference target. A healthcare professional can explain what it means in the context of your overall health.",
+          fil:"Mas mataas ang resultang ito kaysa sa reference target ng laboratoryo. Maaaring ipaliwanag ng healthcare professional kung ano ang ibig sabihin nito batay sa iyong kabuuang kalagayan.",
+          ilo:"Nangato ti resulta ngem iti reference target ti laboratoryo. Mabalin nga ipaliwanag ti healthcare professional ti kaipapananna a maitunos iti sibubukel a salun-at." },
+        { name:"Triglycerides", value:"110 mg/dL", range:"< 150 mg/dL", status:"Normal",
+          en:"Your triglyceride result is within the laboratory's reference range.",
+          fil:"Ang iyong triglycerides ay nasa loob ng reference range ng laboratoryo.",
+          ilo:"Ti resulta ti triglycerides-mo ket adda iti uneg ti reference range ti laboratoryo." }
+      ]
+    },
+    "RPT-1202": {
+      tests: [
+        { name:"Fasting Blood Glucose", value:"94 mg/dL", range:"70–99 mg/dL", status:"Normal",
+          en:"Your fasting blood glucose result is within the laboratory's reference range.",
+          fil:"Ang iyong fasting blood glucose ay nasa loob ng reference range ng laboratoryo.",
+          ilo:"Ti resulta ti fasting blood glucose-mo ket adda iti uneg ti reference range ti laboratoryo." }
+      ]
+    },
+    "RPT-1201": {
+      tests: [
+        { name:"Protein", value:"Trace", range:"Negative", status:"Flagged",
+          en:"A small amount of protein was detected. The result is flagged because it does not match the laboratory's expected reference value.",
+          fil:"May maliit na dami ng protein na nakita. Naka-flag ito dahil hindi ito tugma sa inaasahang reference value ng laboratoryo.",
+          ilo:"Addaan iti bassit a protein a naduktalan. Na-flag daytoy gapu ta saan a kapada ti inan-anus a reference value ti laboratoryo." },
+        { name:"Glucose", value:"Negative", range:"Negative", status:"Normal",
+          en:"No glucose was detected in this result.",
+          fil:"Walang glucose na nakita sa resultang ito.",
+          ilo:"Awan ti glucose a naduktalan iti daytoy a resulta." },
+        { name:"Leukocytes", value:"8–10 /hpf", range:"0–5 /hpf", status:"Flagged",
+          en:"This result is above the laboratory's reference range. It should be interpreted together with your other information.",
+          fil:"Mas mataas ang resultang ito kaysa sa reference range ng laboratoryo. Dapat itong tingnan kasama ng iba pang impormasyon tungkol sa iyo.",
+          ilo:"Nangato ti resulta ngem iti reference range ti laboratoryo. Masapul a kitaen daytoy a kadua dagiti dadduma pay a impormasyon maipanggep kenka." },
+        { name:"Specific Gravity", value:"1.020", range:"1.005–1.030", status:"Normal",
+          en:"Your specific gravity result is within the laboratory's reference range.",
+          fil:"Ang iyong specific gravity ay nasa loob ng reference range ng laboratoryo.",
+          ilo:"Ti resulta ti specific gravity-mo ket adda iti uneg ti reference range ti laboratoryo." }
+      ]
+    },
+    "RPT-1200": {
+      tests: [
+        { name:"Hemoglobin", value:"14.2 g/dL", range:"12.0–16.0 g/dL", status:"Normal",
+          en:"Your hemoglobin result is within the laboratory's reference range.",
+          fil:"Ang iyong hemoglobin ay nasa loob ng reference range ng laboratoryo.",
+          ilo:"Ti resulta ti hemoglobin-mo ket adda iti uneg ti reference range ti laboratoryo." },
+        { name:"White Blood Cell Count", value:"7.6 ×10⁹/L", range:"4.0–11.0 ×10⁹/L", status:"Normal",
+          en:"Your white blood cell count is within the laboratory's reference range.",
+          fil:"Ang iyong white blood cell count ay nasa loob ng reference range ng laboratoryo.",
+          ilo:"Ti white blood cell count-mo ket adda iti uneg ti reference range ti laboratoryo." },
+        { name:"Platelets", value:"301 ×10⁹/L", range:"150–450 ×10⁹/L", status:"Normal",
+          en:"Your platelet result is within the laboratory's reference range.",
+          fil:"Ang iyong platelet count ay nasa loob ng reference range ng laboratoryo.",
+          ilo:"Ti resulta ti platelets-mo ket adda iti uneg ti reference range ti laboratoryo." }
+      ]
+    }
   };
 
   const esc = value => String(value).replace(/[&<>"']/g, c => ({
@@ -473,6 +617,15 @@
     const idEl = document.getElementById("ud-id");
     if (idEl) idEl.textContent = user.id;
 
+    const nameEl = document.getElementById("ud-name");
+    if (nameEl) nameEl.textContent = `Patient #${user.id}`;
+
+    const initEl = document.getElementById("ud-init");
+    if (initEl) initEl.textContent = user.id.replace("CLF-", "");
+
+    const tagsEl = document.getElementById("ud-tags");
+    if (tagsEl) tagsEl.innerHTML = `<span class="tag">${esc(user.language)}</span><span class="tag">${esc(user.status)}</span>`;
+
     const reportsEl = document.getElementById("ud-reports");
     if (reportsEl) reportsEl.textContent = user.reports;
 
@@ -513,21 +666,47 @@
     set("rd-audio", r.audio);
 
     const tests = document.getElementById("rd-tests");
-    if (tests) {
-      const rows = demoTests[r.id] || [
-        ["Extracted laboratory values","Available","Original report","View-only"],
-        ["Reference ranges","Preserved","Original report","View-only"]
-      ];
+    if (!tests) return;
 
-      tests.innerHTML = rows.map(t => `
-        <tr>
-          <td>${esc(t[0])}</td>
-          <td><strong>${esc(t[1])}</strong></td>
-          <td>${esc(t[2])}</td>
-          <td><span class="status ${statusClass(t[3])}">${esc(t[3])}</span></td>
-        </tr>
-      `).join("");
+    const data = demoExplanations[r.id];
+    const langKey = r.language === "Filipino" ? "fil" : r.language === "Ilocano" ? "ilo" : "en";
+
+    if (!data) {
+      tests.innerHTML = `
+        <div class="explanation-card">
+          <div class="explanation-label">Explanation</div>
+          <p>Report processing is still in progress or an explanation is not available for this demo record.</p>
+        </div>`;
+      return;
     }
+
+    tests.innerHTML = `
+      <div class="explanation-intro">
+        <strong>${esc(r.language)} explanation</strong>
+        <span>Simple, patient-facing wording based on the displayed laboratory value and reference range.</span>
+      </div>
+      <div class="result-list">
+        ${data.tests.map(t => `
+          <div class="result-item">
+            <div class="result-top">
+              <div>
+                <div class="result-name">${esc(t.name)}</div>
+                <div class="result-range">Reference range: ${esc(t.range)}</div>
+              </div>
+              <span class="status ${statusClass(t.status)}">${esc(t.status)}</span>
+            </div>
+            <div class="result-value">${esc(t.value)}</div>
+            <div class="simple-explanation">
+              <div class="explanation-label">Simple explanation</div>
+              <p>${esc(t[langKey])}</p>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+      <div class="safety-note">
+        <strong>CLARIFAI scope:</strong> This explanation describes the displayed laboratory result and reference range. It does not diagnose a condition or prescribe treatment.
+      </div>
+    `;
   }
 
   function goTo(viewId) {
