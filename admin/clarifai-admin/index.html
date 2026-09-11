@@ -347,5 +347,225 @@
 
 
 <script src="script.js"></script>
+
+<script>
+/*
+  CLARIFAI ADMIN DEMO DATA
+  ------------------------
+  Fictional/anonymized records for UI prototyping only.
+  These values are not real patient records and are not medical advice.
+*/
+(() => {
+  const demoUsers = [
+    { id:"CLF-001", reports:6, language:"Filipino", active:"2 min ago", status:"Active" },
+    { id:"CLF-002", reports:4, language:"English", active:"18 min ago", status:"Active" },
+    { id:"CLF-003", reports:9, language:"Ilocano", active:"1 hr ago", status:"Active" },
+    { id:"CLF-004", reports:2, language:"Filipino", active:"3 hrs ago", status:"Active" },
+    { id:"CLF-005", reports:7, language:"English", active:"Yesterday", status:"Inactive" },
+    { id:"CLF-006", reports:3, language:"Ilocano", active:"Yesterday", status:"Active" },
+    { id:"CLF-007", reports:11, language:"Filipino", active:"2 days ago", status:"Active" },
+    { id:"CLF-008", reports:1, language:"English", active:"3 days ago", status:"Inactive" },
+    { id:"CLF-009", reports:5, language:"Filipino", active:"4 days ago", status:"Active" },
+    { id:"CLF-010", reports:8, language:"Ilocano", active:"5 days ago", status:"Active" }
+  ];
+
+  const demoReports = [
+    { id:"RPT-1204", user:"CLF-001", panel:"Complete Blood Count", date:"Sep 11, 2026 19:42", flags:2, status:"Completed", language:"Filipino", audio:"Available" },
+    { id:"RPT-1203", user:"CLF-003", panel:"Lipid Profile", date:"Sep 11, 2026 19:36", flags:1, status:"Completed", language:"Ilocano", audio:"Available" },
+    { id:"RPT-1202", user:"CLF-002", panel:"Fasting Blood Glucose", date:"Sep 11, 2026 19:29", flags:0, status:"Completed", language:"English", audio:"Available" },
+    { id:"RPT-1201", user:"CLF-007", panel:"Urinalysis", date:"Sep 11, 2026 19:17", flags:2, status:"Completed", language:"Filipino", audio:"Available" },
+    { id:"RPT-1200", user:"CLF-004", panel:"Complete Blood Count", date:"Sep 11, 2026 18:55", flags:0, status:"Completed", language:"Filipino", audio:"Available" },
+    { id:"RPT-1199", user:"CLF-006", panel:"Liver Function Panel", date:"Sep 11, 2026 18:41", flags:1, status:"Completed", language:"Ilocano", audio:"Available" },
+    { id:"RPT-1198", user:"CLF-010", panel:"Basic Metabolic Panel", date:"Sep 11, 2026 18:23", flags:0, status:"Processing", language:"Ilocano", audio:"Pending" },
+    { id:"RPT-1197", user:"CLF-005", panel:"Thyroid Panel", date:"Sep 11, 2026 18:05", flags:1, status:"Completed", language:"English", audio:"Available" },
+    { id:"RPT-1196", user:"CLF-009", panel:"Lipid Profile", date:"Sep 11, 2026 17:44", flags:2, status:"Completed", language:"Filipino", audio:"Available" },
+    { id:"RPT-1195", user:"CLF-008", panel:"Complete Blood Count", date:"Sep 11, 2026 17:12", flags:0, status:"Error", language:"English", audio:"Unavailable" },
+    { id:"RPT-1194", user:"CLF-003", panel:"Fasting Blood Glucose", date:"Sep 11, 2026 16:58", flags:0, status:"Completed", language:"Ilocano", audio:"Available" },
+    { id:"RPT-1193", user:"CLF-007", panel:"Liver Function Panel", date:"Sep 11, 2026 16:31", flags:1, status:"Completed", language:"Filipino", audio:"Available" }
+  ];
+
+  const demoTests = {
+    "RPT-1204": [
+      ["Hemoglobin","13.8 g/dL","12.0–16.0 g/dL","Normal"],
+      ["White Blood Cell Count","12.4 ×10⁹/L","4.0–11.0 ×10⁹/L","Flagged"],
+      ["Platelets","278 ×10⁹/L","150–450 ×10⁹/L","Normal"],
+      ["Hematocrit","42.1 %","36–46 %","Normal"]
+    ],
+    "RPT-1203": [
+      ["Total Cholesterol","218 mg/dL","< 200 mg/dL","Flagged"],
+      ["HDL Cholesterol","54 mg/dL","≥ 40 mg/dL","Normal"],
+      ["LDL Cholesterol","142 mg/dL","< 100 mg/dL","Flagged"],
+      ["Triglycerides","110 mg/dL","< 150 mg/dL","Normal"]
+    ],
+    "RPT-1202": [
+      ["Fasting Blood Glucose","94 mg/dL","70–99 mg/dL","Normal"]
+    ],
+    "RPT-1201": [
+      ["Protein","Trace","Negative","Flagged"],
+      ["Glucose","Negative","Negative","Normal"],
+      ["Leukocytes","8–10 /hpf","0–5 /hpf","Flagged"],
+      ["Specific Gravity","1.020","1.005–1.030","Normal"]
+    ],
+    "RPT-1200": [
+      ["Hemoglobin","14.2 g/dL","12.0–16.0 g/dL","Normal"],
+      ["White Blood Cell Count","7.6 ×10⁹/L","4.0–11.0 ×10⁹/L","Normal"],
+      ["Platelets","301 ×10⁹/L","150–450 ×10⁹/L","Normal"]
+    ]
+  };
+
+  const esc = value => String(value).replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+
+  const statusClass = status => {
+    const s = String(status).toLowerCase();
+    if (s === "active" || s === "completed" || s === "normal") return "success";
+    if (s === "processing" || s === "flagged") return "warning";
+    if (s === "error" || s === "inactive") return "danger";
+    return "";
+  };
+
+  function renderUsers() {
+    const body = document.getElementById("users-body");
+    if (!body) return;
+
+    body.innerHTML = demoUsers.map(u => `
+      <tr data-user="${esc(u.id)}" style="cursor:pointer" title="Open ${esc(u.id)}">
+        <td><strong>${esc(u.id)}</strong></td>
+        <td>${u.reports}</td>
+        <td>${esc(u.language)}</td>
+        <td>${esc(u.active)}</td>
+        <td><span class="status ${statusClass(u.status)}">${esc(u.status)}</span></td>
+        <td><button class="btn btn-sm" type="button" onclick="event.stopPropagation(); CLARIFAI_ADMIN.openUser('${esc(u.id)}')">View</button></td>
+      </tr>
+    `).join("");
+
+    body.querySelectorAll("tr[data-user]").forEach(row => {
+      row.addEventListener("click", () => CLARIFAI_ADMIN.openUser(row.dataset.user));
+    });
+  }
+
+  function renderReports() {
+    const body = document.getElementById("reports-body");
+    if (!body) return;
+
+    body.innerHTML = demoReports.map(r => `
+      <tr data-report="${esc(r.id)}" style="cursor:pointer" title="Open ${esc(r.id)}">
+        <td><strong>${esc(r.id)}</strong></td>
+        <td>${esc(r.user)}</td>
+        <td>${esc(r.panel)}</td>
+        <td>${esc(r.date)}</td>
+        <td>${r.flags ? `<span class="status warning">${r.flags} flag${r.flags === 1 ? "" : "s"}</span>` : `<span class="status success">None</span>`}</td>
+        <td><span class="status ${statusClass(r.status)}">${esc(r.status)}</span></td>
+        <td><button class="btn btn-sm" type="button" onclick="event.stopPropagation(); CLARIFAI_ADMIN.openReport('${esc(r.id)}')">View</button></td>
+      </tr>
+    `).join("");
+
+    body.querySelectorAll("tr[data-report]").forEach(row => {
+      row.addEventListener("click", () => CLARIFAI_ADMIN.openReport(row.dataset.report));
+    });
+  }
+
+  function fillUserDetail(userId) {
+    const user = demoUsers.find(u => u.id === userId) || demoUsers[0];
+    const reports = demoReports.filter(r => r.user === user.id);
+
+    const idEl = document.getElementById("ud-id");
+    if (idEl) idEl.textContent = user.id;
+
+    const reportsEl = document.getElementById("ud-reports");
+    if (reportsEl) reportsEl.textContent = user.reports;
+
+    const flagsEl = document.getElementById("ud-flags");
+    if (flagsEl) flagsEl.textContent = reports.reduce((sum, r) => sum + r.flags, 0);
+
+    const audioEl = document.getElementById("ud-audio");
+    if (audioEl) audioEl.textContent = reports.filter(r => r.audio === "Available").length;
+
+    const body = document.getElementById("ud-reports-body");
+    if (body) {
+      body.innerHTML = reports.length ? reports.map(r => `
+        <tr>
+          <td><strong>${esc(r.id)}</strong></td>
+          <td>${esc(r.panel)}</td>
+          <td>${esc(r.date)}</td>
+          <td>${esc(r.language)}</td>
+          <td>${r.flags ? `<span class="status warning">${r.flags}</span>` : `<span class="status success">0</span>`}</td>
+          <td><span class="status ${statusClass(r.status)}">${esc(r.status)}</span></td>
+        </tr>
+      `).join("") : `<tr><td colspan="6">No report history available.</td></tr>`;
+    }
+  }
+
+  function fillReportDetail(reportId) {
+    const r = demoReports.find(x => x.id === reportId) || demoReports[0];
+
+    const set = (id, value) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    };
+
+    set("rd-title", r.panel);
+    set("rd-status", r.status);
+    set("rd-user", r.user);
+    set("rd-date", r.date);
+    set("rd-lang", r.language);
+    set("rd-audio", r.audio);
+
+    const tests = document.getElementById("rd-tests");
+    if (tests) {
+      const rows = demoTests[r.id] || [
+        ["Extracted laboratory values","Available","Original report","View-only"],
+        ["Reference ranges","Preserved","Original report","View-only"]
+      ];
+
+      tests.innerHTML = rows.map(t => `
+        <tr>
+          <td>${esc(t[0])}</td>
+          <td><strong>${esc(t[1])}</strong></td>
+          <td>${esc(t[2])}</td>
+          <td><span class="status ${statusClass(t[3])}">${esc(t[3])}</span></td>
+        </tr>
+      `).join("");
+    }
+  }
+
+  function goTo(viewId) {
+    if (typeof window.showView === "function") {
+      window.showView(viewId);
+      return;
+    }
+
+    document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+    const target = document.getElementById(viewId);
+    if (target) target.classList.add("active");
+
+    document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+    const nav = document.querySelector(`[data-view="${viewId}"]`);
+    if (nav) nav.classList.add("active");
+  }
+
+  window.CLARIFAI_ADMIN = {
+    openUser(userId) {
+      fillUserDetail(userId);
+      goTo("user-detail");
+    },
+    openReport(reportId) {
+      fillReportDetail(reportId);
+      goTo("report-detail");
+    },
+    users: demoUsers,
+    reports: demoReports
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    renderUsers();
+    renderReports();
+    fillUserDetail("CLF-001");
+    fillReportDetail("RPT-1204");
+  });
+})();
+</script>
+
 </body>
 </html>
