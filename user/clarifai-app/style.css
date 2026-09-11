@@ -476,6 +476,53 @@
   .proc-wrap h2{ font-size:19px; text-align:center; margin-bottom:4px; }
   .proc-wrap>p{ font-size:12.5px; color:var(--ink-500); text-align:center; margin-bottom:30px; }
 
+  .security-card, .tips-profile-card {
+    margin-top: 14px;
+    padding: 15px 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(20, 35, 30, .08);
+    background: #fff;
+    box-shadow: 0 5px 18px rgba(20, 35, 30, .05);
+  }
+  .security-head, .tips-profile-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 9px;
+  }
+  .security-head svg, .tips-profile-head svg {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+  }
+  .security-head h4, .tips-profile-head h4 {
+    margin: 0;
+    font-size: 14px;
+  }
+  .security-status {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .03em;
+    padding: 5px 8px;
+    border-radius: 999px;
+    background: rgba(74, 148, 111, .12);
+  }
+  .security-card p, .tips-profile-card p {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.55;
+    color: #64706a;
+  }
+  .profile-tips {
+    margin: 8px 0 0;
+    padding-left: 18px;
+    color: #64706a;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .profile-tips li + li { margin-top: 5px; }
+
   .steps{ width:100%; display:flex; flex-direction:column; gap:0; }
   .step{
     display:flex; align-items:flex-start; gap:14px;
@@ -515,7 +562,7 @@
   .results-summary .cap{ font-size:11.5px; opacity:0.7; line-height:1.4; max-width:180px;}
 
   .test-row{
-    display:flex; align-items:center; gap:13px;
+    display:flex; align-items:flex-start; gap:13px;
     padding:14px 16px;
     cursor:pointer;
     margin-bottom:9px;
@@ -523,6 +570,8 @@
   .test-row .mid{ flex:1 1 auto; min-width:0; }
   .test-row .mid h4{ margin:0 0 3px; font-size:14.5px; font-weight:600; }
   .test-row .mid .val{ font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--ink-500); }
+  .test-row .mid .range{ margin-top:3px; font-size:10.5px; color:var(--ink-500); line-height:1.35; }
+  .test-row .mid .hint{ margin-top:3px; font-size:10.5px; color:var(--ink-500); line-height:1.35; }
   .flag{
     font-size:10.5px; font-weight:600;
     padding:5px 9px; border-radius:20px;
